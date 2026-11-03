@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scam Trends | ISKAMDAR</title>
+  <meta name="description" content="The warning signs scammers rely on in job and investment offers, and how Iskamdar scores each one.">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231a5fa8' d='M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z'/%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='m8.5 12 2.5 2.5 4.5-5'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="trends">
+
+  <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-logo" viewBox="0 0 48 56">
+      <path d="M24 2 4 9v17c0 13 8.5 22 20 28 11.500-6 20-15 20-28V9z" fill="#cfe6f7" stroke="#7fb6e0" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M24 9 11 14v12c0 9 6 15.500 13 19.500C31 41.500 37 35 37 26V14z" fill="#1a5fa8"/>
+      <path d="m17.500 27 4.500 4.500L31 22" fill="none" stroke="#fff" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-alert" viewBox="0 0 48 48">
+      <path d="M24 5 3 42h42z" class="alert__body" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="22" y="17" width="4" height="14" rx="2" class="alert__mark"/>
+      <circle cx="24" cy="36" r="2.600" class="alert__mark"/>
+    </symbol>
+
+    <symbol id="i-x" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="19" fill="#ff3b3b"/>
+      <path d="M13 13l14 14M27 13 13 27" stroke="#fff" stroke-width="3.500" stroke-linecap="round" fill="none"/>
+    </symbol>
+
+    <symbol id="i-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 13c0 5-3.500 7.500-7.660 8.950a1 1 0 0 1-.67-.01C7.500 20.500 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.500-1.200 6.240-2.720a1.170 1.170 0 0 1 1.520 0C14.510 3.810 17 5 19 5a1 1 0 0 1 1 1z"/>
+      <path d="m9 12 2 2 4-4"/>
+    </symbol>
+
+    <symbol id="i-lock-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 13c0 5-3.500 7.500-7.660 8.950a1 1 0 0 1-.67-.01C7.500 20.500 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.500-1.200 6.240-2.720a1.170 1.170 0 0 1 1.520 0C14.510 3.810 17 5 19 5a1 1 0 0 1 1 1z"/>
+      <rect x="9" y="11" width="6" height="5" rx="1"/>
+      <path d="M10 11V9.500a2 2 0 0 1 4 0V11"/>
+    </symbol>
+
+    <symbol id="i-badge-check" viewBox="0 0 24 24">
+      <path d="M3.850 8.620a4 4 0 0 1 4.780-4.770 4 4 0 0 1 6.740 0 4 4 0 0 1 4.780 4.780 4 4 0 0 1 0 6.740 4 4 0 0 1-4.770 4.780 4 4 0 0 1-6.750 0 4 4 0 0 1-4.780-4.770 4 4 0 0 1 0-6.760Z" fill="#274f7c"/>
+      <path d="m9 12 2 2 4-4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+      <rect width="20" height="14" x="2" y="6" rx="2"/>
+    </symbol>
+
+    <symbol id="i-landmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7"/>
+      <path d="m12 2 8 5H4z"/>
+    </symbol>
+
+    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M22 21v-2a4 4 0 0 0-3-3.870M16 3.130a4 4 0 0 1 0 7.750"/>
+    </symbol>
+
+    <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+    </symbol>
+
+    <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m15 14 5-5-5-5"/>
+      <path d="M4 20v-7a4 4 0 0 1 4-4h12"/>
+    </symbol>
+
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="14" height="14" x="8" y="8" rx="2"/>
+      <path d="M4 16c-1.100 0-2-.9-2-2V4c0-1.100.9-2 2-2h10c1.100 0 2 .9 2 2"/>
+    </symbol>
+
+    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="20" height="16" x="2" y="4" rx="2"/>
+      <path d="m22 7-8.970 5.700a1.940 1.940 0 0 1-2.060 0L2 7"/>
+    </symbol>
+
+    <symbol id="i-whatsapp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7.900 20A9 9 0 1 0 4 16.100L2 22Z"/>
+      <path d="M9 9.500c0 3 2.500 5.500 5.500 5.500l1.200-1.300-1.900-1-.9.700a4 4 0 0 1-1.800-1.800l.7-.9-1-1.900z" fill="currentColor" stroke="none"/>
+    </symbol>
+
+    <symbol id="i-messenger" viewBox="0 0 24 24">
+      <path d="M12 2C6.500 2 2 6.200 2 11.500c0 2.900 1.300 5.400 3.400 7.100V22l3.100-1.700c1 .3 2 .4 3.500.4 5.500 0 10-4.200 10-9.500S17.500 2 12 2z" fill="currentColor"/>
+      <path d="m6 14 4-4.500 2.500 2.300L18 9l-4 4.500-2.500-2.300z" class="messenger__bolt"/>
+    </symbol>
+
+    <symbol id="i-facebook" viewBox="0 0 24 24">
+      <text x="12" y="21" text-anchor="middle" font-size="26" font-weight="800" font-family="Poppins, Arial, sans-serif" fill="currentColor">f</text>
+    </symbol>
+
+    <symbol id="i-file-pdf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/>
+      <path d="M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8"/>
+    </symbol>
+
+    <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="18" height="18" x="3" y="3" rx="2"/>
+      <circle cx="9" cy="9" r="2"/>
+      <path d="m21 15-3.090-3.090a2 2 0 0 0-2.820 0L6 21"/>
+    </symbol>
+
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12.500 4.500 4.500L19 7.500"/>
+    </symbol>
+
+    <symbol id="i-avatar" viewBox="0 0 80 80">
+      <rect width="80" height="80" rx="18" fill="#274f7c"/>
+      <circle cx="40" cy="31" r="13" fill="#d4d4d8"/>
+      <path d="M15 80c0-14 10-23 25-23s25 9 25 23z" fill="#d4d4d8"/>
+    </symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="index.html" aria-label="ISKAMDAR home">
+        <svg class="brand__logo" aria-hidden="true"><use href="#i-logo"/></svg>
+        <span class="brand__name">ISKAMDAR</span>
+      </a>
+
+      <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle menu">
+        <span class="nav-toggle__bar"></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a href="index.html#how" data-nav="how">How it works</a>
+        <a href="trends.html" data-nav="trends" aria-current="page">Scam Trends</a>
+        <a href="index.html#faq" data-nav="faq">FAQ</a>
+        <a href="about.html" data-nav="about">About</a>
+        <a href="report.html" class="site-nav__cta" data-nav="report">Report a scam</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <section class="view" id="view-trends" aria-labelledby="trends-title">
+      <div class="container hero hero--compact">
+        <p class="eyebrow">Scam trends</p>
+        <h1 class="hero__title" id="trends-title">Warning signs scammers rely on.</h1>
+        <p class="hero__lead">These are the patterns Iskamdar looks for in job and investment offers. Each one adds points to the risk score.</p>
+      </div>
+      <div class="container trends" id="trends-groups"></div>
+      <div class="container trends__cta">
+        <a class="btn btn--primary btn--lg" href="index.html">Check a link</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner container">
+      <p class="site-footer__brand">ISKAMDAR</p>
+      <p>An Intelligent Scam-Detection Framework Using Real-Time Page Structure and Behavioral Analysis</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scan Report | ISKAMDAR</title>
+  <meta name="description" content="What Iskamdar found, with options to download, share, or report the scam to the right agency.">
+  <meta name="color-scheme" content="light">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231a5fa8' d='M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z'/%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='m8.5 12 2.5 2.5 4.5-5'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="report">
+
+  <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-logo" viewBox="0 0 48 56">
+      <path d="M24 2 4 9v17c0 13 8.5 22 20 28 11.500-6 20-15 20-28V9z" fill="#cfe6f7" stroke="#7fb6e0" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M24 9 11 14v12c0 9 6 15.500 13 19.500C31 41.500 37 35 37 26V14z" fill="#1a5fa8"/>
+      <path d="m17.500 27 4.500 4.500L31 22" fill="none" stroke="#fff" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-alert" viewBox="0 0 48 48">
+      <path d="M24 5 3 42h42z" class="alert__body" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="22" y="17" width="4" height="14" rx="2" class="alert__mark"/>
+      <circle cx="24" cy="36" r="2.600" class="alert__mark"/>
+    </symbol>
+
+    <symbol id="i-x" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="19" fill="#ff3b3b"/>
+      <path d="M13 13l14 14M27 13 13 27" stroke="#fff" stroke-width="3.500" stroke-linecap="round" fill="none"/>
+    </symbol>
+
+    <symbol id="i-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 13c0 5-3.500 7.500-7.660 8.950a1 1 0 0 1-.67-.01C7.500 20.500 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.500-1.200 6.240-2.720a1.170 1.170 0 0 1 1.520 0C14.510 3.810 17 5 19 5a1 1 0 0 1 1 1z"/>
+      <path d="m9 12 2 2 4-4"/>
+    </symbol>
+
+    <symbol id="i-lock-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 13c0 5-3.500 7.500-7.660 8.950a1 1 0 0 1-.67-.01C7.500 20.500 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.500-1.200 6.240-2.720a1.170 1.170 0 0 1 1.520 0C14.510 3.810 17 5 19 5a1 1 0 0 1 1 1z"/>
+      <rect x="9" y="11" width="6" height="5" rx="1"/>
+      <path d="M10 11V9.500a2 2 0 0 1 4 0V11"/>
+    </symbol>
+
+    <symbol id="i-badge-check" viewBox="0 0 24 24">
+      <path d="M3.850 8.620a4 4 0 0 1 4.780-4.770 4 4 0 0 1 6.740 0 4 4 0 0 1 4.780 4.780 4 4 0 0 1 0 6.740 4 4 0 0 1-4.770 4.780 4 4 0 0 1-6.750 0 4 4 0 0 1-4.780-4.770 4 4 0 0 1 0-6.760Z" fill="#274f7c"/>
+      <path d="m9 12 2 2 4-4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+      <rect width="20" height="14" x="2" y="6" rx="2"/>
+    </symbol>
+
+    <symbol id="i-landmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7"/>
+      <path d="m12 2 8 5H4z"/>
+    </symbol>
+
+    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M22 21v-2a4 4 0 0 0-3-3.870M16 3.130a4 4 0 0 1 0 7.750"/>
+    </symbol>
+
+    <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+    </symbol>
+
+    <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m15 14 5-5-5-5"/>
+      <path d="M4 20v-7a4 4 0 0 1 4-4h12"/>
+    </symbol>
+
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="14" height="14" x="8" y="8" rx="2"/>
+      <path d="M4 16c-1.100 0-2-.9-2-2V4c0-1.100.9-2 2-2h10c1.100 0 2 .9 2 2"/>
+    </symbol>
+
+    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="20" height="16" x="2" y="4" rx="2"/>
+      <path d="m22 7-8.970 5.700a1.940 1.940 0 0 1-2.060 0L2 7"/>
+    </symbol>
+
+    <symbol id="i-whatsapp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7.900 20A9 9 0 1 0 4 16.100L2 22Z"/>
+      <path d="M9 9.500c0 3 2.500 5.500 5.500 5.500l1.200-1.300-1.900-1-.9.700a4 4 0 0 1-1.800-1.800l.7-.9-1-1.900z" fill="currentColor" stroke="none"/>
+    </symbol>
+
+    <symbol id="i-messenger" viewBox="0 0 24 24">
+      <path d="M12 2C6.500 2 2 6.200 2 11.500c0 2.900 1.300 5.400 3.400 7.100V22l3.100-1.700c1 .3 2 .4 3.500.4 5.500 0 10-4.200 10-9.500S17.500 2 12 2z" fill="currentColor"/>
+      <path d="m6 14 4-4.500 2.500 2.300L18 9l-4 4.500-2.500-2.300z" class="messenger__bolt"/>
+    </symbol>
+
+    <symbol id="i-facebook" viewBox="0 0 24 24">
+      <text x="12" y="21" text-anchor="middle" font-size="26" font-weight="800" font-family="Poppins, Arial, sans-serif" fill="currentColor">f</text>
+    </symbol>
+
+    <symbol id="i-file-pdf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/>
+      <path d="M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8"/>
+    </symbol>
+
+    <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="18" height="18" x="3" y="3" rx="2"/>
+      <circle cx="9" cy="9" r="2"/>
+      <path d="m21 15-3.090-3.090a2 2 0 0 0-2.820 0L6 21"/>
+    </symbol>
+
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12.500 4.500 4.500L19 7.500"/>
+    </symbol>
+
+    <symbol id="i-avatar" viewBox="0 0 80 80">
+      <rect width="80" height="80" rx="18" fill="#274f7c"/>
+      <circle cx="40" cy="31" r="13" fill="#d4d4d8"/>
+      <path d="M15 80c0-14 10-23 25-23s25 9 25 23z" fill="#d4d4d8"/>
+    </symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="index.html" aria-label="ISKAMDAR home">
+        <svg class="brand__logo" aria-hidden="true"><use href="#i-logo"/></svg>
+        <span class="brand__name">ISKAMDAR</span>
+      </a>
+
+      <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle menu">
+        <span class="nav-toggle__bar"></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a href="index.html#how" data-nav="how">How it works</a>
+        <a href="trends.html" data-nav="trends">Scam Trends</a>
+        <a href="index.html#faq" data-nav="faq">FAQ</a>
+        <a href="about.html" data-nav="about">About</a>
+        <a href="report.html" class="site-nav__cta" data-nav="report" aria-current="page">Report a scam</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <section class="view view--decor" id="view-report" aria-labelledby="report-heading">
+      <h1 class="sr-only" id="report-heading">Scan report</h1>
+
+      <div class="container report__wrap">
+        <div class="report-empty" id="report-empty" hidden>
+          <h2 class="section-title">Nothing to report yet</h2>
+          <p>Check a link or message first. Iskamdar then attaches the score, the link and the red flags to your report automatically.</p>
+          <a class="btn btn--primary" href="index.html">Check a link</a>
+        </div>
+
+        <div id="report-content">
+          <div class="summary-card" id="report-summary">
+            <div class="ring-wrap ring-wrap--sm" id="report-ring" data-level="high">
+              <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="ring__track" cx="60" cy="60" r="52" pathLength="100"/>
+                <circle class="ring__value" cx="60" cy="60" r="52" pathLength="100"/>
+              </svg>
+              <div class="ring-wrap__label"><span class="ring-wrap__score" id="report-ring-score">0%</span></div>
+            </div>
+
+            <div class="summary-card__text">
+              <p class="summary-card__verdict" id="report-verdict">Scam detected, high risk</p>
+              <p class="summary-card__subject" id="report-subject"></p>
+            </div>
+
+            <div class="summary-card__actions">
+              <button class="btn btn--white" type="button" data-open="dlg-download">
+                <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>Download
+              </button>
+              <button class="btn btn--sky" type="button" data-open="dlg-share">
+                <svg class="icon" aria-hidden="true"><use href="#i-share"/></svg>Share
+              </button>
+            </div>
+          </div>
+
+          <h2 class="section-title">What We Found?</h2>
+          <ul class="findings" id="findings"></ul>
+          <p class="disclaimer">This report is for guidance only. Always verify before acting.</p>
+          <p class="disclaimer disclaimer--note" id="report-note" hidden></p>
+        </div>
+
+        <!-- Shown only when someone opens a shared report link -->
+        <div class="shared-cta" id="shared-cta" hidden>
+          <p>You're viewing a report someone shared with you.</p>
+          <a class="btn btn--primary" href="index.html">Check a link yourself</a>
+        </div>
+      </div>
+
+      <div id="report-actions">
+        <section class="container report__wrap" aria-labelledby="agencies-title">
+          <h2 class="section-title" id="agencies-title">REPORT THIS SCAM</h2>
+          <ul class="agencies" id="agency-list">
+            <li class="agency" data-agency-row="pnp">
+              <svg class="agency__icon agency__icon--green" aria-hidden="true"><use href="#i-shield-check"/></svg>
+              <div class="agency__text">
+                <p class="agency__name">PNP Anti-Cybercrime <span class="agency__tag" hidden>Best match</span></p>
+                <p class="agency__desc">General online scam reports</p>
+              </div>
+              <button class="btn btn--outline btn--sm" type="button" data-agency="pnp" aria-label="Report to PNP Anti-Cybercrime">Report</button>
+            </li>
+            <li class="agency" data-agency-row="dole">
+              <svg class="agency__icon agency__icon--blue" aria-hidden="true"><use href="#i-briefcase"/></svg>
+              <div class="agency__text">
+                <p class="agency__name">DOLE / DMW <span class="agency__tag" hidden>Best match</span></p>
+                <p class="agency__desc">Fake job offers, illegal recruitment</p>
+              </div>
+              <button class="btn btn--outline btn--sm" type="button" data-agency="dole" aria-label="Report to DOLE or DMW">Report</button>
+            </li>
+            <li class="agency" data-agency-row="sec">
+              <svg class="agency__icon agency__icon--blue" aria-hidden="true"><use href="#i-landmark"/></svg>
+              <div class="agency__text">
+                <p class="agency__name">Securities and Exchange Commission EIPD <span class="agency__tag" hidden>Best match</span></p>
+                <p class="agency__desc">Investment and lending scams</p>
+              </div>
+              <button class="btn btn--outline btn--sm" type="button" data-agency="sec" aria-label="Report to the Securities and Exchange Commission EIPD">Report</button>
+            </li>
+          </ul>
+
+          <h2 class="section-title">What Happens Next?</h2>
+        </section>
+
+        <section class="steps-band steps-band--flush" aria-label="What happens after you report">
+          <ol class="steps-band__list container">
+            <li class="steps-band__item">
+              <span class="steps-band__num">01</span>
+              <h3>You submit</h3>
+              <p>The score, link and flags are attached automatically.</p>
+            </li>
+            <li class="steps-band__item">
+              <span class="steps-band__num">02</span>
+              <h3>Agency reviews</h3>
+              <p>Your chosen agency logs and investigates the report.</p>
+            </li>
+            <li class="steps-band__item">
+              <span class="steps-band__num">03</span>
+              <h3>You get a reference</h3>
+              <p>Save it to follow up or check status later.</p>
+            </li>
+          </ol>
+        </section>
+
+        <div class="container report__wrap">
+          <div class="help-bar">
+            <svg class="help-bar__icon" aria-hidden="true"><use href="#i-users"/></svg>
+            <div class="help-bar__text">
+              <p class="help-bar__title">Help someone else avoid this</p>
+              <p class="help-bar__sub" id="flag-count">Share this report to warn the people you know.</p>
+            </div>
+            <button class="btn btn--outline btn--sm" type="button" data-open="dlg-share">Share this report</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner container">
+      <p class="site-footer__brand">ISKAMDAR</p>
+      <p>An Intelligent Scam-Detection Framework Using Real-Time Page Structure and Behavioral Analysis</p>
+    </div>
+  </footer>
+
+  <!-- Dialogs used on this page -->
+  <dialog class="dlg" id="dlg-download" aria-labelledby="dlg-download-title">
+    <form class="dlg__body" id="dl-form" novalidate>
+      <button class="dlg__x" type="button" data-close aria-label="Close">&times;</button>
+      <h2 class="dlg__title dlg__title--left" id="dlg-download-title">Download Report</h2>
+      <p class="dlg__sub">Save a copy to keep or send to someone you trust.</p>
+
+      <div class="mini-summary" data-level="high" id="dl-preview">
+        <div class="ring-wrap ring-wrap--xs" id="dl-ring" data-level="high">
+          <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring__track" cx="60" cy="60" r="52" pathLength="100"/>
+            <circle class="ring__value" cx="60" cy="60" r="52" pathLength="100"/>
+          </svg>
+          <div class="ring-wrap__label"><span class="ring-wrap__score" id="dl-score">0%</span></div>
+        </div>
+        <div>
+          <p class="mini-summary__verdict" id="dl-verdict"></p>
+          <p class="mini-summary__subject" id="dl-subject"></p>
+        </div>
+      </div>
+
+      <fieldset class="field-group">
+        <legend>Format</legend>
+        <div class="choice-cards">
+          <label class="choice-card">
+            <input type="radio" name="format" value="pdf" checked>
+            <span class="choice-card__box">
+              <svg class="choice-card__icon" aria-hidden="true"><use href="#i-file-pdf"/></svg>
+              <strong>PDF</strong>
+              <small>Full report, 1 page</small>
+            </span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="format" value="png">
+            <span class="choice-card__box">
+              <svg class="choice-card__icon" aria-hidden="true"><use href="#i-image"/></svg>
+              <strong>Image</strong>
+              <small>PNG, for chats</small>
+            </span>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="field-group">
+        <legend>Include</legend>
+        <label class="check"><input type="checkbox" name="inc-score" checked><span class="check__box"><svg aria-hidden="true"><use href="#i-check"/></svg></span>Risk score and verdict</label>
+        <label class="check"><input type="checkbox" name="inc-found" checked><span class="check__box"><svg aria-hidden="true"><use href="#i-check"/></svg></span><span id="dl-found-label">What we found</span></label>
+        <label class="check"><input type="checkbox" name="inc-time" checked><span class="check__box"><svg aria-hidden="true"><use href="#i-check"/></svg></span>Date and time of the scan</label>
+      </fieldset>
+
+      <div class="dlg__actions">
+        <button class="btn btn--primary" type="submit" id="dl-submit">
+          <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg><span id="dl-submit-label">Download PDF</span>
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="dlg" id="dlg-share" aria-labelledby="dlg-share-title">
+    <div class="dlg__body">
+      <button class="dlg__x" type="button" data-close aria-label="Close">&times;</button>
+      <h2 class="dlg__title dlg__title--left" id="dlg-share-title">Share this report</h2>
+      <p class="dlg__sub">Help a friend or family member spot this scam.</p>
+
+      <div class="mini-summary" data-level="high" id="sh-preview">
+        <div class="ring-wrap ring-wrap--xs" id="sh-ring" data-level="high">
+          <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring__track" cx="60" cy="60" r="52" pathLength="100"/>
+            <circle class="ring__value" cx="60" cy="60" r="52" pathLength="100"/>
+          </svg>
+          <div class="ring-wrap__label"><span class="ring-wrap__score" id="sh-score">0%</span></div>
+        </div>
+        <div>
+          <p class="mini-summary__verdict" id="sh-verdict"></p>
+          <p class="mini-summary__subject" id="sh-subject"></p>
+        </div>
+      </div>
+
+      <label class="field-label" for="share-link">Report link</label>
+      <div class="link-row">
+        <input class="link-row__input" id="share-link" type="text" readonly>
+        <button class="btn btn--ghost btn--sm" type="button" data-action="copy-link">
+          <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg>Copy link
+        </button>
+      </div>
+
+      <div class="share-grid">
+        <button class="share-btn" type="button" data-share="messenger">
+          <span class="share-btn__icon"><svg aria-hidden="true"><use href="#i-messenger"/></svg></span>Messenger
+        </button>
+        <button class="share-btn" type="button" data-share="facebook">
+          <span class="share-btn__icon"><svg aria-hidden="true"><use href="#i-facebook"/></svg></span>Facebook
+        </button>
+        <button class="share-btn" type="button" data-share="whatsapp">
+          <span class="share-btn__icon"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg></span>WhatsApp
+        </button>
+        <button class="share-btn" type="button" data-share="email">
+          <span class="share-btn__icon"><svg aria-hidden="true"><use href="#i-mail"/></svg></span>Email
+        </button>
+      </div>
+
+      <p class="privacy-note">
+        <svg class="icon icon--lg" aria-hidden="true"><use href="#i-lock-shield"/></svg>
+        <span>The link shows the report only. Your name and details are never included.</span>
+      </p>
+    </div>
+  </dialog>
+
+  <dialog class="dlg dlg--sticky" id="dlg-submit" aria-labelledby="dlg-submit-title">
+    <form class="dlg__body" id="submit-form" novalidate>
+      <div class="dlg__head">
+        <span class="dlg__head-icon"><svg class="icon icon--lg" aria-hidden="true"><use href="#i-shield-check"/></svg></span>
+        <div>
+          <h2 class="dlg__title dlg__title--left dlg__title--md" id="dlg-submit-title">Submitting to <span id="submit-agency">PNP Anti-Cybercrime</span></h2>
+          <p class="dlg__sub">Review what's being sent before you confirm.</p>
+        </div>
+      </div>
+
+      <div class="score-box" id="submit-score-box" data-level="high">
+        <span>Risk score</span>
+        <strong id="submit-score">99 / 100 &middot; High Risk</strong>
+      </div>
+
+      <h3 class="micro-label">Submitted text</h3>
+      <blockquote class="quote" id="submit-text"></blockquote>
+
+      <h3 class="micro-label">Flags detected</h3>
+      <ul class="dot-list" id="submit-flags"></ul>
+
+      <label class="micro-label" for="submit-note">Add a note (optional)</label>
+      <textarea class="textarea" id="submit-note" rows="3" maxlength="500" placeholder="Anything else the agency should know"></textarea>
+
+      <div class="dlg__actions dlg__actions--split">
+        <button class="btn btn--ghost" type="button" data-close>Cancel</button>
+        <button class="btn btn--primary" type="submit" id="submit-confirm">Confirm &amp; Submit</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="dlg dlg--sm" id="dlg-success" aria-labelledby="success-title">
+    <div class="dlg__body dlg__body--center">
+      <span class="success-mark"><svg aria-hidden="true"><use href="#i-check"/></svg></span>
+      <h2 class="dlg__title" id="success-title">Report Submitted</h2>
+      <p class="dlg__text" id="success-message">Your report has been sent.</p>
+
+      <div class="ref-box">
+        <span class="ref-box__label" id="success-ref-label">Reference number</span>
+        <div class="ref-box__row">
+          <code id="success-ref">ISK-PNP-00000</code>
+          <button class="ref-box__copy" type="button" data-action="copy-ref" aria-label="Copy reference number"><svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg></button>
+        </div>
+      </div>
+
+      <p class="dlg__hint" id="success-hint">Agencies set their own review times. Keep this reference to check status later.</p>
+      <p class="dlg__hint dlg__hint--demo" id="success-demo" hidden>Demo mode: nothing was sent to the agency. To file a real report, contact them directly.</p>
+
+      <div class="dlg__actions dlg__actions--split">
+        <button class="btn btn--ghost" type="button" data-open="dlg-share">Share This Report</button>
+        <a class="btn btn--primary" href="index.html">Back to ISKAMDAR</a>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
