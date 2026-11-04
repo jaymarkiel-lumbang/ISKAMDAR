@@ -89,7 +89,13 @@ body {
   color: var(--ink);
   background: var(--white);
   -webkit-font-smoothing: antialiased;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
 }
+.site-header { grid-row: 1; }
+main          { grid-row: 2; }
+.site-footer  { grid-row: 3; }
 
 h1, h2, h3, h4, p, ul, ol, figure, blockquote, fieldset { margin: 0; padding: 0; }
 ul, ol { list-style: none; }
@@ -349,7 +355,7 @@ main:focus { outline: none; }
    6. Home
    ------------------------------------------------------------------- */
 .hero { padding-block: clamp(36px, 7vw, 64px) 8px; text-align: center; }
-.hero--compact { padding-bottom: 28px; }
+.hero--compact { padding-block: clamp(10px, 1.5vw, 18px) 20px; }
 
 .hero__title {
   margin-top: 14px;
@@ -528,7 +534,7 @@ main:focus { outline: none; }
 .back-link { font-size: 0.95rem; font-weight: 600; color: var(--blue); }
 .back-link:hover { text-decoration: underline; }
 
-.tips { padding-block: 72px 88px; max-width: 980px; }
+.tips { padding-block: 72px 88px; }
 .tips .section-title { margin-top: 6px; }
 .tips__lead { max-width: 560px; margin: 14px auto 28px; text-align: center; color: var(--muted); }
 .tips__list { border: 2px solid var(--ink); background: var(--white); }
@@ -1244,6 +1250,63 @@ main {
     var(--white);
 }
 
+/* Report page: fill viewport height and center empty state */
+body[data-page="report"] main,
+body[data-page="result"] main {
+  display: flex;
+  flex-direction: column;
+}
+body[data-page="report"] #view-report,
+body[data-page="result"] #view-result {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+body[data-page="report"] .report__wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+body[data-page="report"] #report-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(249, 251, 254, 0.93);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+}
+.loading-overlay[hidden] { display: none; }
+.loader { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.loader-inner { overflow: visible; }
+.loader-text { font-size: 1rem; font-weight: 500; color: var(--blue); letter-spacing: 0.01em; }
+.shield-track { fill: none; stroke: #d0d0d0; stroke-width: 2.5; }
+.shield { fill: none; stroke: #4f8cff; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 30 70; animation: shieldMove 2s linear infinite; }
+.lock-body { fill: #4f8cff; animation: lockPulse 1.5s ease-in-out infinite; }
+.lock { fill: none; stroke: #666; stroke-width: 2.5; stroke-linecap: round; }
+.keyhole { fill: #fff; animation: keyPulse 1.5s ease-in-out infinite; }
+.keyhole-line { fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; }
+.scan { stroke: #4f8cff; stroke-width: 1.5; stroke-linecap: round; opacity: 0; transform-box: fill-box; transform-origin: center; animation: scan 1.8s ease-in-out infinite; }
+@keyframes shieldMove { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+@keyframes lockPulse { 0%, 100% { opacity: 0.65; transform: scale(1); transform-origin: center; } 50% { opacity: 1; transform: scale(1.08); transform-origin: center; } }
+@keyframes keyPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+@keyframes scan { 0% { opacity: 0; transform: translateY(-5px); } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; transform: translateY(35px); } }
+
 /* Header */
 .site-header {
   background: rgba(255, 255, 255, 0.88);
@@ -1328,7 +1391,7 @@ main {
 
 /* Home */
 .hero { padding-block: clamp(48px, 7vw, 104px) 12px; }
-.hero--compact { padding-block: clamp(40px, 5vw, 72px) 36px; }
+.hero--compact { padding-block: clamp(14px, 2vw, 24px) 24px; }
 .hero__title {
   max-width: 1300px;
   margin-inline: auto;
@@ -1407,7 +1470,7 @@ main {
 .back-link-wrap { margin-top: 28px; }
 .back-link { display: inline-block; padding: 8px 4px; }
 
-.tips { max-width: 1240px; padding-block: 96px 120px; }
+.tips { padding-block: 96px 120px; }
 .tips .section-title { margin-top: 12px; }
 .tips__lead { max-width: 720px; margin: 18px auto 40px; font-size: 1.05rem; }
 .tips__list { background: var(--white); border: 1px solid #e0e6ef; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); overflow: hidden; }

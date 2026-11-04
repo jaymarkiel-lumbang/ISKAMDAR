@@ -1326,6 +1326,7 @@
       $('#success-ref').textContent = reference;
       $('#success-hint').hidden = demo;
       $('#success-demo').hidden = !demo;
+      try { sessionStorage.removeItem(STORAGE_KEY); } catch {}
       openDialog('dlg-success');
     } catch (err) {
       console.error(err);
@@ -1376,13 +1377,14 @@
   }
 
   function initReportPage() {
+    const fromResult = new URLSearchParams(location.search).has('src');
     const apply = () => {
       closeAllDialogs();
       const token = location.hash.startsWith('#r=') ? location.hash.slice(3) : null;
       const shared = token === null ? null : parseSharedScan(token);
       if (token !== null && !shared) toast('That shared report link is not valid.');
       state.sharedMode = Boolean(shared);
-      state.scan = shared || loadScan();
+      state.scan = shared || (fromResult ? loadScan() : null);
       renderReport(state.scan);
     };
     apply();
@@ -1407,14 +1409,23 @@
     btn.setAttribute('aria-busy', 'true');
     btn.disabled = true;
     btn.textContent = 'Scanning…';
+    const overlay = $('#loading-overlay');
+    if (overlay) {
+      overlay.hidden = false;
+      await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    }
     try {
-      const scan = await analyze(value);
+      const [scan] = await Promise.all([
+        analyze(value),
+        new Promise(r => setTimeout(r, 900)),
+      ]);
       state.scan = scan;
       store.set(JSON.stringify(scan));
       input.value = '';
       location.href = URLS.result;
     } catch (err) {
       console.error(err);
+      if (overlay) overlay.hidden = true;
       toast('Something went wrong. Please try again.');
     } finally {
       btn.removeAttribute('aria-busy');
@@ -1468,6 +1479,11 @@
     on('#dl-form', 'change', (e) => { if (e.target.name === 'format') syncDownloadLabel(); });
     on('#submit-form', 'submit', handleSubmit);
 
+    if (PAGE === 'home') {
+      window.addEventListener('pageshow', (e) => {
+        if (e.persisted) { const inp = $('#home-input'); if (inp) inp.value = ''; }
+      });
+    }
     if (PAGE === 'result') initResultPage();
     if (PAGE === 'report') initReportPage();
     if (PAGE === 'trends') renderTrends();
