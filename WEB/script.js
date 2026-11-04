@@ -24,7 +24,7 @@
     //   POST { url } -> { signals: [ids], evidence: { pageAgeDays, registrar }, flagCount }
     // Only ids with source "page" in SIGNALS below are accepted.
     // Leave '' to score from the link and message text only (no network).
-    pageScanEndpoint: '',
+    pageScanEndpoint: 'http://localhost:5000/scan',
 
     // Endpoint that receives agency reports.
     //   POST { agency, score, level, input, urls, flags, note, createdAt } -> { reference }

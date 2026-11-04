@@ -3,3 +3,6 @@ scikit-learn
 scipy
 joblib
 openpyxl
+flask
+flask-cors
+requests
