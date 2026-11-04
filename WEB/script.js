@@ -645,8 +645,7 @@
   }
 
   function buildNote(scan) {
-    if (scan.shared || !scan.urls.length || scan.pageScanned) return '';
-    return 'The page behind the link was not loaded, so this score is based on the link and message text only.';
+    return '';
   }
 
   /* ===================================================================
@@ -1401,6 +1400,12 @@
     if (!value) {
       state.lastInput = input;
       openDialog('dlg-input');
+      return;
+    }
+    const isUrl = /^https?:\/\//i.test(value) || /^[\w-]+\.[\w.-]+/i.test(value);
+    if (!isUrl && value.split(/\s+/).length < 10) {
+      state.lastInput = input;
+      openDialog('dlg-short-input');
       return;
     }
 

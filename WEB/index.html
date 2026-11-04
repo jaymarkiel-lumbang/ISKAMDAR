@@ -235,6 +235,15 @@
     </div>
   </dialog>
 
+  <dialog class="dlg dlg--sm" id="dlg-short-input" aria-labelledby="dlg-short-input-title">
+    <div class="dlg__body dlg__body--center">
+      <svg class="dlg__icon alert--warn" aria-hidden="true"><use href="#i-alert"/></svg>
+      <h2 class="dlg__title" id="dlg-short-input-title">Too Short to Analyze</h2>
+      <p class="dlg__text">Please provide at least 10 words so the system can accurately assess the content.</p>
+      <button class="btn btn--primary btn--block" type="button" data-close autofocus>OK</button>
+    </div>
+  </dialog>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <div class="loading-overlay" id="loading-overlay" hidden aria-label="Scanning" role="status">
