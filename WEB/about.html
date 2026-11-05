@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -233,66 +233,30 @@
 
       <section class="container team" aria-labelledby="team-title">
         <h2 class="section-title" id="team-title">Five developers, one detection engine</h2>
-        <p class="team__lead">Iskamdar is built and maintained by a five-person team, each owning a stage of the pipeline &mdash; from the moment a link comes in to the moment a user sees a verdict.</p>
+        <p class="team__lead">Two focused groups building Iskamdar together, from the interface you see to the engine behind it.</p>
 
-        <!-- TODO: replace each "Name" with the team member's real name. -->
-        <ul class="team__list">
-          <li class="member">
-            <svg class="member__avatar" role="img" aria-label="Profile photo placeholder"><use href="#i-avatar"/></svg>
-            <div class="member__who">
-              <h3>Jaymar Lumbang</h3>
-              <p>Team lead &amp; backend engineer</p>
-            </div>
-            <div class="member__what">
-              <p>Owns the detection engine that ties every module together &mdash; routing, scoring, and the API the web app calls. Sets the risk-scoring logic that turns warning signs into a single 0&ndash;100 number.</p>
-              <p class="member__stages">Pipeline stages: <strong>Routing &middot; Scoring</strong></p>
-            </div>
-          </li>
-          <li class="member">
-            <svg class="member__avatar" role="img" aria-label="Profile photo placeholder"><use href="#i-avatar"/></svg>
-            <div class="member__who">
-              <h3>John Samuel Enriquez</h3>
-              <p>NLP engineer</p>
-            </div>
-            <div class="member__what">
-              <p>Builds the text-analysis module that reads SMS messages and job posts for scam language &mdash; urgency phrasing, unrealistic pay claims, and other patterns pulled from real scam reports.</p>
-              <p class="member__stages">Pipeline stage: <strong>Text analysis</strong></p>
-            </div>
-          </li>
-          <li class="member">
-            <svg class="member__avatar" role="img" aria-label="Profile photo placeholder"><use href="#i-avatar"/></svg>
-            <div class="member__who">
-              <h3>Mico Mempin</h3>
-              <p>Web scraping engineer</p>
-            </div>
-            <div class="member__what">
-              <p>Handles the fetching layer that safely loads the real page behind a link in the background, so the system can see the same page a user would, not just its headline text.</p>
-              <p class="member__stages">Pipeline stage: <strong>Fetching</strong></p>
-            </div>
-          </li>
-          <li class="member">
-            <svg class="member__avatar" role="img" aria-label="Profile photo placeholder"><use href="#i-avatar"/></svg>
-            <div class="member__who">
-              <h3>Shaina Cruz</h3>
-              <p>Data scientist</p>
-            </div>
-            <div class="member__what">
-              <p>Designs the structural and behavioral checks &mdash; spotting copied layouts, fake urgency timers, forced sign-ups and hidden redirects &mdash; and weighs how much each one should count toward the risk score.</p>
-              <p class="member__stages">Pipeline stages: <strong>Structural check &middot; Behavior check</strong></p>
-            </div>
-          </li>
-          <li class="member">
-            <svg class="member__avatar" role="img" aria-label="Profile photo placeholder"><use href="#i-avatar"/></svg>
-            <div class="member__who">
-              <h3>Michelle Anne Angeles</h3>
-              <p>Frontend developer</p>
-            </div>
-            <div class="member__what">
-              <p>Builds the web app people actually use to paste a link or SMS text and read the result, keeping the risk score and plain-language findings clear enough to act on in seconds.</p>
-              <p class="member__stages">Pipeline stages: <strong>Input &middot; Result</strong></p>
-            </div>
-          </li>
-        </ul>
+        <div class="team__grid">
+          <article class="squad" aria-labelledby="squad-fe">
+            <p class="squad__tag">What you see</p>
+            <h3 class="squad__title" id="squad-fe">Front-End Developers</h3>
+            <p class="squad__desc">Focus on building and refining the user interface of Iskamdar. They ensure the web application is responsive, visually intuitive, and provides a seamless user experience across devices.</p>
+            <ul class="squad__people">
+              <li class="person"><span class="person__photo" data-photo="shaina"><span class="person__initial" aria-hidden="true">S</span></span><span class="person__name">Shaina Cruz</span></li>
+              <li class="person"><span class="person__photo" data-photo="michelle"><span class="person__initial" aria-hidden="true">M</span></span><span class="person__name">Michelle Anne Angeles</span></li>
+            </ul>
+          </article>
+
+          <article class="squad" aria-labelledby="squad-be">
+            <p class="squad__tag">What powers it</p>
+            <h3 class="squad__title" id="squad-be">Back-End Developers</h3>
+            <p class="squad__desc">Handle the core logic, database management, API design, and server-side architecture powering Iskamdar. They ensure fast data processing, system security, and stable connectivity between the front-end interface and back-end services.</p>
+            <ul class="squad__people">
+              <li class="person"><span class="person__photo" data-photo="sam"><span class="person__initial" aria-hidden="true">S</span></span><span class="person__name">John Samuel Enriquez</span></li>
+              <li class="person"><span class="person__photo" data-photo="jaymar"><span class="person__initial" aria-hidden="true">J</span></span><span class="person__name">Jaymar Lumbang</span></li>
+              <li class="person"><span class="person__photo" data-photo="mico"><span class="person__initial" aria-hidden="true">M</span></span><span class="person__name">Mico Mempin</span></li>
+            </ul>
+          </article>
+        </div>
       </section>
     </section>
   </main>
@@ -318,5 +282,20 @@
 
   <script src="textmodel.js"></script>
   <script src="script.js"></script>
+  <script>
+    /* Team photos: drop sam.jpg, jaymar.jpg, mico.jpg, shaina.jpg, michelle.jpg (.jpg/.jpeg/.png/.webp) into images/team/ */
+    document.querySelectorAll('[data-photo]').forEach(function (box) {
+      var exts = ['jpg', 'jpeg', 'png', 'webp'], i = 0;
+      var img = new Image();
+      img.alt = '';
+      img.decoding = 'async';
+      img.onload = function () { box.appendChild(img); box.classList.add('has-photo'); };
+      img.onerror = function () { if (++i < exts.length) img.src = 'images/team/' + box.dataset.photo + '.' + exts[i]; };
+      img.src = 'images/team/' + box.dataset.photo + '.' + exts[0];
+    });
+  </script>
 </body>
 </html>
+
+
+
