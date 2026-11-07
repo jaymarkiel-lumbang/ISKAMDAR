@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>About | ISKAMDAR</title>
-  <meta name="description" content="How the Iskamdar scam-detection framework works, from link to verdict, and the team behind it.">
+  <meta name="description" content="How the Iskamdar scam-detection framework works, from message to verdict, and the team behind it.">
   <meta name="color-scheme" content="light">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231a5fa8' d='M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z'/%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='m8.5 12 2.5 2.5 4.5-5'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="vendor/bootstrap.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=9">
 </head>
 <body data-page="about">
 
@@ -150,30 +150,30 @@
         <div class="about-hero__main">
           <p class="eyebrow eyebrow--left">Real-time scam-detection framework</p>
           <h1 class="about-hero__title" id="about-title">Check the page.<br>Not just the post.</h1>
-          <p class="about-hero__lead">Iskamdar checks links to job and investment offers for signs of scams. Share a suspicious link, a text message, or both &mdash; the same detection engine reads the page's structure and behavior, and returns a risk score with a plain-language list of what looked suspicious.</p>
+          <p class="about-hero__lead">Iskamdar checks job and investment messages for signs of scams. Paste a suspicious text message &mdash; the detection engine analyzes its wording and returns a risk score with a plain-language list of what looked suspicious.</p>
 
           <form class="check-form check-form--left" data-check-form novalidate>
-            <label class="sr-only" for="about-input">Link or message to check</label>
-            <input class="check-form__input" id="about-input" name="q" type="text" placeholder="https://example.com/job-offer or paste an SMS" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="4000">
+            <label class="sr-only" for="about-input">Message to check</label>
+            <input class="check-form__input" id="about-input" name="q" type="text" placeholder="Paste the text message or job offer here" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="4000">
             <button class="btn btn--primary btn--lg" type="submit">Check Now</button>
           </form>
-          <p class="form-hint form-hint--left">Works on links and SMS text &mdash; paste either one, or both.</p>
+          <p class="form-hint form-hint--left">Text analysis only &mdash; paste an SMS or message (at least 10 words).</p>
         </div>
 
         <aside class="why-card" aria-labelledby="why-title">
-          <h2 class="why-card__title" id="why-title">Why check the actual page</h2>
+          <h2 class="why-card__title" id="why-title">Why check the message</h2>
           <ul class="why-card__list">
             <li>
-              <h3>Not just the words</h3>
-              <p>Most tools only read the text of a job post. Iskamdar reads the real page behind the link: its design, layout and urgency timers.</p>
+              <h3>Built for message wording</h3>
+              <p>Many tools only check links. Iskamdar reads the wording of the message for scam language patterns.</p>
             </li>
             <li>
-              <h3>What the page actually does</h3>
-              <p>Forced sign-ups, payment requests and hidden redirects are checked alongside what the page says.</p>
+              <h3>Scam language patterns</h3>
+              <p>Upfront fees, urgency, unrealistic pay and requests for private details are flagged.</p>
             </li>
             <li>
               <h3>Checked the moment it matters</h3>
-              <p>No existing tool warns users in real time while browsing &mdash; Iskamdar does, right from the web app.</p>
+              <p>Paste the message and get a result in seconds, right from the web app.</p>
             </li>
           </ul>
         </aside>
@@ -194,34 +194,31 @@
         <div class="pipeline__inner container">
           <div class="pipeline__head">
             <h2 id="pipeline-title">How ISKAMDAR works</h2>
-            <p>08 steps, one risk score</p>
+            <p>05 steps, one risk score</p>
           </div>
           <ol class="pipeline__grid">
-            <li><span class="pipeline__num">01</span><h3>Input</h3><p>The user shares a link or pastes an SMS text into the web app.</p></li>
-            <li><span class="pipeline__num">02</span><h3>Routing</h3><p>The system determines whether the input is a link, a message, or both, and routes it accordingly.</p></li>
-            <li><span class="pipeline__num">03</span><h3>Text analysis</h3><p>Message text is scanned for scam language patterns &mdash; urgency phrasing, unrealistic pay claims, and more.</p></li>
-            <li><span class="pipeline__num">04</span><h3>Fetching</h3><p>For a link, the system loads the real page in the background.</p></li>
-            <li><span class="pipeline__num">05</span><h3>Structural check</h3><p>The page's design and layout are scanned for known scam patterns.</p></li>
-            <li><span class="pipeline__num">06</span><h3>Behavior check</h3><p>Sign-up prompts, payment requests and redirects are checked as the page runs.</p></li>
-            <li><span class="pipeline__num">07</span><h3>Scoring</h3><p>Each warning sign adds points to one risk score, from 0 to 100.</p></li>
-            <li><span class="pipeline__num">08</span><h3>Result &amp; decision</h3><p>The score and plain-language findings are shown, with a link to report the scam to official channels.</p></li>
+            <li><span class="pipeline__num">01</span><h3>Input</h3><p>The user pastes an SMS or message text into the web app.</p></li>
+            <li><span class="pipeline__num">02</span><h3>Text analysis</h3><p>The message is scanned for scam language patterns &mdash; urgency phrasing, unrealistic pay claims, upfront fees and more.</p></li>
+            <li><span class="pipeline__num">03</span><h3>Text model</h3><p>A trained text model estimates how closely the wording matches known scam messages.</p></li>
+            <li><span class="pipeline__num">04</span><h3>Scoring</h3><p>Each warning sign adds to one risk score, from 0 to 100.</p></li>
+            <li><span class="pipeline__num">05</span><h3>Result &amp; decision</h3><p>The risk level (Low risk, Suspicious or High risk) and plain-language findings are shown, with a link to report the scam to official channels.</p></li>
           </ol>
         </div>
       </section>
 
       <section class="container stages" aria-labelledby="stages-title">
         <p class="eyebrow eyebrow--left">How it works</p>
-        <h2 class="section-title section-title--left" id="stages-title">Three stages, from<br>link to verdict</h2>
+        <h2 class="section-title section-title--left" id="stages-title">Three stages, from<br>message to verdict</h2>
         <ol class="stages__grid">
           <li>
             <span class="stage-pill stage-pill--share">Share</span>
-            <h3>You share the link or SMS</h3>
-            <p>From the web app &mdash; a link, a text message, or both.</p>
+            <h3>You paste the message</h3>
+            <p>From the web app &mdash; the text of a job or investment offer.</p>
           </li>
           <li>
             <span class="stage-pill stage-pill--scan">Scan</span>
-            <h3>Iskamdar scans it live</h3>
-            <p>Page structure and on-page behavior are checked in real time.</p>
+            <h3>Iskamdar analyzes the text</h3>
+            <p>The message text is analyzed for scam language patterns in real time.</p>
           </li>
           <li>
             <span class="stage-pill stage-pill--decide">Decide</span>
@@ -231,6 +228,7 @@
         </ol>
       </section>
 
+      <!-- TEAM SECTION HIDDEN FOR DEFENSE PRESENTATION — remove this comment line and the closing one below to restore
       <section class="container team" aria-labelledby="team-title">
         <h2 class="section-title" id="team-title">Five developers, one detection engine</h2>
         <p class="team__lead">Two focused groups building Iskamdar together, from the interface you see to the engine behind it.</p>
@@ -258,6 +256,7 @@
           </article>
         </div>
       </section>
+      END TEAM SECTION -->
     </section>
   </main>
 
@@ -273,7 +272,7 @@
     <div class="dlg__body dlg__body--center">
       <svg class="dlg__icon alert--warn" aria-hidden="true"><use href="#i-alert"/></svg>
       <h2 class="dlg__title" id="dlg-input-title">Input Required</h2>
-      <p class="dlg__text">Please enter a link or message before clicking the button.</p>
+      <p class="dlg__text">Please enter a message before clicking the button.</p>
       <button class="btn btn--primary btn--block" type="button" data-close autofocus>OK</button>
     </div>
   </dialog>
@@ -281,7 +280,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="textmodel.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=9"></script>
   <script>
     /* Team photos: drop sam.jpg, jaymar.jpg, mico.jpg, shaina.jpg, michelle.jpg (.jpg/.jpeg/.png/.webp) into images/team/ */
     document.querySelectorAll('[data-photo]').forEach(function (box) {

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Scan Result | ISKAMDAR</title>
-  <meta name="description" content="Your Iskamdar risk score and the red flags found in the link or message you checked.">
+  <meta name="description" content="Your Iskamdar risk score and the red flags found in the message you checked.">
   <meta name="color-scheme" content="light">
   <meta name="robots" content="noindex">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231a5fa8' d='M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z'/%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='m8.5 12 2.5 2.5 4.5-5'/%3E%3C/svg%3E">
@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="vendor/bootstrap.min.css">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=9">
 </head>
 <body data-page="result">
 
@@ -150,7 +150,7 @@
       <div class="container hero hero--compact">
         <p class="eyebrow">Real-time scam detector</p>
         <h1 class="hero__title" id="result-heading">Don't take the offer's word for it.</h1>
-        <p class="hero__lead">Iskamdar reads the actual page behind the link &mdash; its design, its claims, and what it does when you click &mdash; and turns that into a risk score you can act on.</p>
+        <p class="hero__lead">Iskamdar analyzes the wording of a job or investment message for scam language patterns and turns that into a risk score you can act on.</p>
       </div>
 
       <div class="container">
@@ -160,7 +160,7 @@
               <svg class="verdict-card__icon" id="result-icon" aria-hidden="true"><use href="#i-alert"/></svg>
               <div>
                 <p class="verdict-card__label">Analysis result:</p>
-                <p class="verdict-card__title" id="result-title" role="status">Scam detected!</p>
+                <p class="verdict-card__title" id="result-title" role="status">High risk</p>
               </div>
             </div>
 
@@ -187,7 +187,7 @@
             <div class="result-panel__actions">
               <button class="btn btn--light" type="button" data-open="dlg-deep">Learn more</button>
               <a class="btn btn--danger" href="report.html?src=result">Report</a>
-              <a class="btn btn--outline" href="index.html">&larr; Check another link</a>
+              <a class="btn btn--outline" href="index.html">&larr; Check another message</a>
             </div>
           </div>
         </div>
@@ -271,6 +271,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=9"></script>
 </body>
 </html>

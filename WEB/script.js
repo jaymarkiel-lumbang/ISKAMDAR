@@ -24,7 +24,7 @@
     //   POST { url } -> { signals: [ids], evidence: { pageAgeDays, registrar }, flagCount }
     // Only ids with source "page" in SIGNALS below are accepted.
     // Leave '' to score from the link and message text only (no network).
-    pageScanEndpoint: 'http://localhost:5000/scan',
+    pageScanEndpoint: '', // text-analysis prototype: no page scan
 
     // Endpoint that receives agency reports.
     //   POST { agency, score, level, input, urls, flags, note, createdAt } -> { reference }
@@ -52,22 +52,22 @@
 
   const LEVELS = Object.freeze({
     high: {
-      label: 'High Risk',
-      title: 'Scam detected!',
-      heading: "Explanation on why it's a scam:",
-      summary: 'Scam detected, high risk',
+      label: 'High risk',
+      title: 'High risk',
+      heading: 'Why the models estimate a high chance of a scam:',
+      summary: 'High risk',
     },
     medium: {
-      label: 'Medium Risk',
-      title: 'Looks suspicious',
-      heading: 'Why it looks suspicious:',
-      summary: 'Suspicious, medium risk',
+      label: 'Suspicious',
+      title: 'Suspicious',
+      heading: 'Why the models estimate a moderate chance of a scam:',
+      summary: 'Suspicious',
     },
     low: {
-      label: 'Low Risk',
-      title: 'No red flags found',
-      heading: 'What we checked:',
-      summary: 'No red flags, low risk',
+      label: 'Low risk',
+      title: 'Low risk',
+      heading: 'What the models checked:',
+      summary: 'Low risk',
     },
   });
 
@@ -574,7 +574,8 @@
   /** The whole pipeline: input -> routing -> text -> link -> page -> score. */
   async function analyze(rawInput) {
     const input = String(rawInput).trim().slice(0, CONFIG.maxInputLength);
-    const routed = routeInput(input);
+    // Text-analysis prototype: everything is treated as message text.
+    const routed = { kind: 'message', urls: [], text: input, leftover: input };
     const found = new Map();
     const add = ({ id, weight, ...extra }) => {
       if (!SIGNALS[id] || found.has(id)) return;
@@ -1384,6 +1385,10 @@
       if (token !== null && !shared) toast('That shared report link is not valid.');
       state.sharedMode = Boolean(shared);
       state.scan = shared || (fromResult ? loadScan() : null);
+      if (!state.scan && token === null) {
+        location.replace(URLS.home); // nothing to report: go back to the home page
+        return;
+      }
       renderReport(state.scan);
     };
     apply();
@@ -1402,8 +1407,7 @@
       openDialog('dlg-input');
       return;
     }
-    const isUrl = /^https?:\/\//i.test(value) || /^[\w-]+\.[\w.-]+/i.test(value);
-    if (!isUrl && value.split(/\s+/).length < 10) {
+    if (value.split(/\s+/).length < 10) {
       state.lastInput = input;
       openDialog('dlg-short-input');
       return;
@@ -1465,9 +1469,53 @@
     if (t instanceof HTMLDialogElement && !t.classList.contains('dlg--sticky')) t.close();
   }
 
+  /* ---- Demo notice (floating glass card) --------------------------- */
+  function initDemoNotice() {
+    // Auto-opens on the home page when the system is opened or refreshed, not when
+    // arriving from another page of the site (result, about...). Elsewhere only the pill shows.
+    const navType = performance.getEntriesByType?.('navigation')?.[0]?.type;
+    const fromSite = Boolean(document.referrer) && new URL(document.referrer).origin === location.origin;
+    const minimized = !(PAGE === 'home' && (navType === 'reload' || (navType === 'navigate' && !fromSite)));
+
+    const items = [
+      ['Text analysis only', 'Paste a message. Links and web pages are not scanned in this version.'],
+      ['Not a guarantee', 'A low risk result does not prove an offer is real. Always verify before responding.'],
+      ['Demo mode', 'Reports are not sent to any agency, and nothing you paste is stored on a server.'],
+    ];
+    const card = el('aside', { class: 'demo-note', role: 'complementary', 'aria-label': 'Demo version notice' }, [
+      el('div', { class: 'demo-note__head' }, [
+        el('span', { class: 'demo-note__badge', text: 'Demo version' }),
+        el('button', { class: 'demo-note__min', type: 'button', 'aria-label': 'Minimize notice', text: '−' }),
+      ]),
+      el('p', { class: 'demo-note__title', text: 'System demonstration' }),
+      el('p', { class: 'demo-note__lead', text: 'This demo shows the panel how Iskamdar analyzes a message and produces a risk level.' }),
+      el('ul', { class: 'demo-note__list' }, items.map(([h, p]) =>
+        el('li', {}, [el('strong', { text: h + '. ' }), p]))),
+      el('p', { class: 'demo-note__foot', text: 'Risk levels: Low risk 0–29, Suspicious 30–69, High risk 70–100 (development thresholds).' }),
+      el('button', { class: 'demo-note__go', type: 'button', text: 'Start demo' }),
+    ]);
+    const back = el('div', { class: 'demo-backdrop' });
+    const pill = el('button', { class: 'demo-pill', type: 'button', 'aria-label': 'Show demo version notice', text: 'Demo version' });
+
+    const set = (min) => {
+      card.hidden = min;
+      back.hidden = min;
+      pill.hidden = !min;
+    };
+    $('.demo-note__min', card).addEventListener('click', () => set(true));
+    $('.demo-note__go', card).addEventListener('click', () => set(true));
+    back.addEventListener('click', () => set(true));
+    pill.addEventListener('click', () => set(false));
+    document.body.append(back, card, pill);
+    card.hidden = minimized;
+    back.hidden = minimized;
+    pill.hidden = !minimized;
+  }
+
   function init() {
     state.scan = loadScan();
     markNav();
+    initDemoNotice();
 
     // Listeners that exist on every page.
     document.addEventListener('submit', handleCheck);
