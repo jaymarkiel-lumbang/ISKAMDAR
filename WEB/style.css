@@ -1755,8 +1755,7 @@ body[data-page="report"] #report-empty {
 .demo-note__foot { margin: 10px 0 0; padding-top: 9px; font-size: 0.7rem; color: rgba(255, 255, 255, 0.68); border-top: 1px solid rgba(255, 255, 255, 0.2); }
 .demo-pill {
   position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 20px;
   bottom: 20px;
   z-index: 900;
   padding: 8px 16px;
@@ -1781,3 +1780,39 @@ body[data-page="report"] #report-empty {
 .demo-note__go:hover { background: var(--yellow); }
 @media (prefers-reduced-motion: reduce) { .demo-note { animation: none; } }
 @media print { .demo-note, .demo-pill, .demo-backdrop { display: none; } }
+
+.hero__link { color: var(--blue); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.hero__link:hover { color: var(--blue-hover); }
+
+.samples { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; }
+.samples__label { font-size: 0.82rem; font-weight: 600; color: var(--muted); }
+.sample-chip { padding: 6px 14px; font: 700 0.78rem var(--font); color: #fff; border: 0; border-radius: 999px; cursor: pointer; }
+.sample-chip--low { background: var(--level-low); }
+.sample-chip--medium { background: var(--level-medium); color: #3a2a00; }
+.sample-chip--high { background: var(--level-high); }
+.sample-chip:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+/* Sample chips: soft, low-to-mid opacity look */
+.sample-chip { border: 1px solid transparent; }
+.sample-chip--low { background: rgba(31, 157, 87, 0.18); color: #167a43; border-color: rgba(31, 157, 87, 0.4); }
+.sample-chip--medium { background: rgba(245, 165, 36, 0.2); color: #8a5a00; border-color: rgba(245, 165, 36, 0.45); }
+.sample-chip--high { background: rgba(238, 28, 37, 0.14); color: #c4121b; border-color: rgba(238, 28, 37, 0.38); }
+.sample-chip:hover { filter: none; }
+.sample-chip--low:hover { background: rgba(31, 157, 87, 0.3); }
+.sample-chip--medium:hover { background: rgba(245, 165, 36, 0.32); }
+.sample-chip--high:hover { background: rgba(238, 28, 37, 0.24); }
+
+/* Pipeline steps that are not part of the text-analysis demo yet */
+.pipeline__grid li.is-soon { position: relative; opacity: 0.5; }
+.pipeline__soon {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 3px 10px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #3a2a00;
+  background: var(--amber-step);
+  border-radius: 999px;
+}

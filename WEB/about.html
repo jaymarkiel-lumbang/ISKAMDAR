@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="vendor/bootstrap.min.css">
-  <link rel="stylesheet" href="style.css?v=9">
+  <link rel="stylesheet" href="style.css?v=18">
 </head>
 <body data-page="about">
 
@@ -148,16 +148,16 @@
     <section class="view" id="view-about" aria-labelledby="about-title">
       <div class="container about-hero">
         <div class="about-hero__main">
-          <p class="eyebrow eyebrow--left">Real-time scam-detection framework</p>
+          <p class="eyebrow eyebrow--left">Scam-detection framework</p>
           <h1 class="about-hero__title" id="about-title">Check the page.<br>Not just the post.</h1>
           <p class="about-hero__lead">Iskamdar checks job and investment messages for signs of scams. Paste a suspicious text message &mdash; the detection engine analyzes its wording and returns a risk score with a plain-language list of what looked suspicious.</p>
 
           <form class="check-form check-form--left" data-check-form novalidate>
-            <label class="sr-only" for="about-input">Message to check</label>
-            <input class="check-form__input" id="about-input" name="q" type="text" placeholder="Paste the text message or job offer here" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="4000">
+            <label class="sr-only" for="about-input">Link or message to check</label>
+            <input class="check-form__input" id="about-input" name="q" type="text" placeholder="Paste the text message or job offer here, a link, or both" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="4000">
             <button class="btn btn--primary btn--lg" type="submit">Check Now</button>
           </form>
-          <p class="form-hint form-hint--left">Text analysis only &mdash; paste an SMS or message (at least 10 words).</p>
+          <p class="form-hint form-hint--left">Works on links and SMS text &mdash; paste either one, or both.</p>
         </div>
 
         <aside class="why-card" aria-labelledby="why-title">
@@ -186,7 +186,7 @@
         </div>
         <div class="problem__row">
           <p class="problem__label">Core Problem</p>
-          <p>Most existing tools only read the words in a job post, not the actual webpage, and none warn users in real time while browsing. Iskamdar checks the real page, at the moment it matters, from the web app.</p>
+          <p>Most existing tools only read the words in a job post, not the actual webpage, and none warn users while browsing. Iskamdar checks the real page, at the moment it matters, from the web app.</p>
         </div>
       </section>
 
@@ -194,14 +194,17 @@
         <div class="pipeline__inner container">
           <div class="pipeline__head">
             <h2 id="pipeline-title">How ISKAMDAR works</h2>
-            <p>05 steps, one risk score</p>
+            <p>08 steps, one risk score</p>
           </div>
           <ol class="pipeline__grid">
-            <li><span class="pipeline__num">01</span><h3>Input</h3><p>The user pastes an SMS or message text into the web app.</p></li>
-            <li><span class="pipeline__num">02</span><h3>Text analysis</h3><p>The message is scanned for scam language patterns &mdash; urgency phrasing, unrealistic pay claims, upfront fees and more.</p></li>
-            <li><span class="pipeline__num">03</span><h3>Text model</h3><p>A trained text model estimates how closely the wording matches known scam messages.</p></li>
-            <li><span class="pipeline__num">04</span><h3>Scoring</h3><p>Each warning sign adds to one risk score, from 0 to 100.</p></li>
-            <li><span class="pipeline__num">05</span><h3>Result &amp; decision</h3><p>The risk level (Low risk, Suspicious or High risk) and plain-language findings are shown, with a link to report the scam to official channels.</p></li>
+            <li><span class="pipeline__num">01</span><h3>Input</h3><p>The user shares a link or pastes an SMS text into the web app.</p></li>
+            <li><span class="pipeline__num">02</span><h3>Routing</h3><p>The system determines whether the input is a link, a message, or both, and routes it accordingly.</p></li>
+            <li><span class="pipeline__num">03</span><h3>Text analysis</h3><p>Message text is scanned for scam language patterns &mdash; urgency phrasing, unrealistic pay claims, and more.</p></li>
+            <li class="is-soon"><span class="pipeline__num">04</span><h3>Fetching</h3><p>For a link, the system loads the real page in the background.</p><span class="pipeline__soon">Upcoming soon</span></li>
+            <li class="is-soon"><span class="pipeline__num">05</span><h3>Structural check</h3><p>The page's design and layout are scanned for known scam patterns.</p><span class="pipeline__soon">Upcoming soon</span></li>
+            <li class="is-soon"><span class="pipeline__num">06</span><h3>Behavior check</h3><p>Sign-up prompts, payment requests and redirects are checked as the page runs.</p><span class="pipeline__soon">Upcoming soon</span></li>
+            <li><span class="pipeline__num">07</span><h3>Scoring</h3><p>Each warning sign adds points to one risk score, from 0 to 100.</p></li>
+            <li><span class="pipeline__num">08</span><h3>Result &amp; decision</h3><p>The score and plain-language findings are shown, with a link to report the scam to official channels.</p></li>
           </ol>
         </div>
       </section>
@@ -212,13 +215,13 @@
         <ol class="stages__grid">
           <li>
             <span class="stage-pill stage-pill--share">Share</span>
-            <h3>You paste the message</h3>
-            <p>From the web app &mdash; the text of a job or investment offer.</p>
+            <h3>You share the link or message</h3>
+            <p>Paste the text message or job offer here, a link, or both.</p>
           </li>
           <li>
             <span class="stage-pill stage-pill--scan">Scan</span>
             <h3>Iskamdar analyzes the text</h3>
-            <p>The message text is analyzed for scam language patterns in real time.</p>
+            <p>The message text is analyzed for scam language patterns.</p>
           </li>
           <li>
             <span class="stage-pill stage-pill--decide">Decide</span>
@@ -263,7 +266,7 @@
   <footer class="site-footer">
     <div class="site-footer__inner container">
       <p class="site-footer__brand">ISKAMDAR</p>
-      <p>An Intelligent Scam-Detection Framework Using Real-Time Page Structure and Behavioral Analysis</p>
+      <p>An Intelligent Scam-Detection Framework Using Page Structure and Behavioral Analysis</p>
     </div>
   </footer>
 
@@ -280,7 +283,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="textmodel.js"></script>
-  <script src="script.js?v=9"></script>
+  <script src="script.js?v=18"></script>
   <script>
     /* Team photos: drop sam.jpg, jaymar.jpg, mico.jpg, shaina.jpg, michelle.jpg (.jpg/.jpeg/.png/.webp) into images/team/ */
     document.querySelectorAll('[data-photo]').forEach(function (box) {

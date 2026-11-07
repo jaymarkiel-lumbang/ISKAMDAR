@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ISKAMDAR | Real-Time Scam Detector</title>
-  <meta name="description" content="Iskamdar analyzes the wording of a job or investment message for scam language patterns and turns that into a risk score you can act on.">
+  <title>ISKAMDAR | Scam Detector</title>
+  <meta name="description" content="Iskamdar analyzes a job or investment link or message for scam language patterns and turns that into a risk score you can act on.">
   <meta name="color-scheme" content="light">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231a5fa8' d='M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z'/%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='m8.5 12 2.5 2.5 4.5-5'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="vendor/bootstrap.min.css">
-  <link rel="stylesheet" href="style.css?v=9">
+  <link rel="stylesheet" href="style.css?v=18">
 </head>
 <body data-page="home">
 
@@ -148,14 +148,20 @@
     <section class="view" id="view-home" aria-labelledby="home-title">
       <div class="container hero">
         <h1 class="hero__title" id="home-title">Don't take the offer's word for it.</h1>
-        <p class="hero__lead">Iskamdar analyzes the wording of a job or investment message for scam language patterns and turns that into a risk score you can act on.</p>
+        <p class="hero__lead">Iskamdar analyzes a job or investment link or message for scam language patterns and turns that into a risk score you can act on.</p>
 
         <form class="check-form" data-check-form novalidate>
-          <label class="sr-only" for="home-input">Message to check</label>
-          <input class="check-form__input" id="home-input" name="q" type="text" placeholder="Paste the text message or job offer here" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="4000">
+          <label class="sr-only" for="home-input">Link or message to check</label>
+          <input class="check-form__input" id="home-input" name="q" type="text" placeholder="Paste the text message or job offer here, a link, or both" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="4000">
           <button class="btn btn--primary btn--lg" type="submit">Check Now</button>
         </form>
-        <p class="form-hint">Text analysis only &mdash; paste an SMS or message (at least 10 words).</p>
+        <p class="form-hint">Works on links and SMS text &mdash; paste either one, or both.</p>
+        <div class="samples" role="group" aria-label="Sample messages for the demo">
+          <span class="samples__label">Try a sample:</span>
+          <button type="button" class="sample-chip sample-chip--low" data-sample="Hi Maria, thank you for applying for the customer service role at our Makati office. Your interview is scheduled on Monday at 10 AM. Please bring a valid ID and your resume. Reply to confirm your attendance.">Low risk</button>
+          <button type="button" class="sample-chip sample-chip--medium" data-sample="Hi, we found your resume online. We are hiring a part time online assistant. Please continue the interview on Viber so we can discuss the schedule and the salary details with you.">Suspicious</button>
+          <button type="button" class="sample-chip sample-chip--high" data-sample="URGENT! You are hired without interview. Pay 1500 pesos registration fee via GCash today, limited slots! Send your OTP and ID photo to confirm. Earn 5000 pesos per day guaranteed, no risk!">High risk</button>
+        </div>
       </div>
 
       <div class="container">
@@ -180,13 +186,13 @@
         <ol class="steps-band__list container">
           <li class="steps-band__item">
             <span class="steps-band__num">01</span>
-            <h3>Paste the message</h3>
-            <p>From the web app &mdash; paste the text of a job or investment offer.</p>
+            <h3>Share the link or message</h3>
+            <p>Paste the text message or job offer here, a link, or both.</p>
           </li>
           <li class="steps-band__item">
             <span class="steps-band__num">02</span>
             <h3>We analyze the text</h3>
-            <p>Message wording is checked for scam language patterns in real time.</p>
+            <p>Message wording is checked for scam language patterns.</p>
           </li>
           <li class="steps-band__item">
             <span class="steps-band__num">03</span>
@@ -221,7 +227,7 @@
   <footer class="site-footer">
     <div class="site-footer__inner container">
       <p class="site-footer__brand">ISKAMDAR</p>
-      <p>An Intelligent Scam-Detection Framework Using Real-Time Page Structure and Behavioral Analysis</p>
+      <p>An Intelligent Scam-Detection Framework Using Page Structure and Behavioral Analysis</p>
     </div>
   </footer>
 
@@ -264,6 +270,6 @@
   </div>
 
   <script src="textmodel.js"></script>
-  <script src="script.js?v=9"></script>
+  <script src="script.js?v=18"></script>
 </body>
 </html>

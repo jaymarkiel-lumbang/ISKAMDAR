@@ -574,8 +574,7 @@
   /** The whole pipeline: input -> routing -> text -> link -> page -> score. */
   async function analyze(rawInput) {
     const input = String(rawInput).trim().slice(0, CONFIG.maxInputLength);
-    // Text-analysis prototype: everything is treated as message text.
-    const routed = { kind: 'message', urls: [], text: input, leftover: input };
+    const routed = routeInput(input);
     const found = new Map();
     const add = ({ id, weight, ...extra }) => {
       if (!SIGNALS[id] || found.has(id)) return;
@@ -1407,7 +1406,8 @@
       openDialog('dlg-input');
       return;
     }
-    if (value.split(/\s+/).length < 10) {
+    const isUrl = /^https?:\/\//i.test(value) || /^[\w-]+\.[\w.-]+/i.test(value);
+    if (!isUrl && value.split(/\s+/).length < 10) {
       state.lastInput = input;
       openDialog('dlg-short-input');
       return;
@@ -1533,6 +1533,13 @@
     on('#submit-form', 'submit', handleSubmit);
 
     if (PAGE === 'home') {
+      document.addEventListener('click', (e) => {
+        const chip = e.target.closest('[data-sample]');
+        const inp = $('#home-input');
+        if (!chip || !inp) return;
+        inp.value = chip.dataset.sample;
+        inp.focus();
+      });
       window.addEventListener('pageshow', (e) => {
         if (e.persisted) { const inp = $('#home-input'); if (inp) inp.value = ''; }
       });
