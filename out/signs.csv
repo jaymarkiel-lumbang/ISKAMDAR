@@ -1,0 +1,35 @@
+id,url,label,s1,s2,notes
+100680ad546c,https://example.com,legit,1,1,"Only 1 of 4 kinds of business information found (missing: business address, contact details, registration number). Page looks bare or unfinished: fewer than 3 internal links, no privacy or terms link."
+35a6b1358e6e,https://www.ue.edu.ph,legit,0,0,
+5bbc8b3f50dd,https://www.pup.edu.ph,legit,0,0,
+7f1d34e1d063,https://www.bsp.gov.ph,legit,0,0,
+ac1a6b855f7b,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_scam_01_wfh_taglish_bare.html,scam,1,1,"Only 1 of 4 kinds of business information found (missing: business address, contact details, registration number). Page looks bare or unfinished: fewer than 3 internal links, placeholder text, no privacy or terms link."
+a20314f507d5,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_scam_02_invest_email_only.html,scam,0,1,"Page looks bare or unfinished: fewer than 3 internal links, no privacy or terms link."
+d15797d821e7,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_scam_03_job_fee_english.html,scam,0,1,"Page looks bare or unfinished: fewer than 3 internal links, no privacy or terms link."
+0443cad5e37f,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_scam_04_crypto_bare.html,scam,1,1,"Only 1 of 4 kinds of business information found (missing: business address, contact details, registration number). Page looks bare or unfinished: fewer than 3 internal links, placeholder text, no privacy or terms link."
+b5673082cdbf,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_scam_05_polished_invest.html,scam,0,0,
+04a18d68fe4e,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_scam_06_polished_job.html,scam,0,0,
+fe59b930bb3c,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_scam_07_taglish_task_bare.html,scam,1,1,"Only 1 of 4 kinds of business information found (missing: business address, contact details, registration number). Page looks bare or unfinished: fewer than 3 internal links, placeholder text, no privacy or terms link."
+1d36de7b262a,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_scam_08_loan_mobile_only.html,scam,0,0,
+0d0e825e4ef7,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_scam_09_trading_placeholder.html,scam,1,1,"Only 1 of 4 kinds of business information found (missing: business address, contact details, registration number). Page looks bare or unfinished: fewer than 3 internal links, placeholder text, no privacy or terms link."
+f507249f9745,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_scam_10_fb_style_job.html,scam,1,1,"Only 1 of 4 kinds of business information found (missing: business address, contact details, registration number). Page looks bare or unfinished: fewer than 3 internal links, no privacy or terms link."
+71bba827405f,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_legit_01_bakery_taglish.html,legit,0,0,
+8873ca62af52,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_legit_02_sarisari_tiny.html,legit,0,1,"Page looks bare or unfinished: fewer than 3 internal links, no privacy or terms link."
+d32ba3170307,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_legit_03_accounting_en.html,legit,0,0,
+79f02619cacc,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_legit_04_clinic_taglish.html,legit,0,0,
+85a141ee401f,file:///C:/Elle/School/3rd%20yr/SoftEng%20ISKAMDAR/ISKAMDAR/ISKAMDAR/mock_pages/mock_legit_05_info_in_image.html,legit,1,1,"Only 1 of 4 kinds of business information found (missing: business address, contact details, registration number). Page looks bare or unfinished: fewer than 3 internal links, no privacy or terms link."
+0a7c38ab243d,https://www.up.edu.ph,legit,n.a.,n.a.,page could not be checked
+3565b670216c,https://www.dlsu.edu.ph,legit,n.a.,n.a.,page could not be checked
+3750a00e6c7a,https://www.ust.edu.ph,legit,0,0,
+c10aa43f373b,https://www.mapua.edu.ph,legit,0,0,
+1a1df0a8ede0,https://www.dole.gov.ph,legit,n.a.,n.a.,page could not be checked
+5b7c4347d7c1,https://www.dti.gov.ph,legit,0,0,
+e69186f3431f,https://www.philhealth.gov.ph,legit,1,0,"Only 1 of 4 kinds of business information found (missing: business address, contact details, registration number)."
+561c7bc8560e,https://www.bdo.com.ph,legit,n.a.,n.a.,page could not be checked
+f7f517e0925f,https://www.bpi.com.ph,legit,0,0,
+2921c6644f67,https://www.metrobank.com.ph,legit,0,0,
+228b8ee4b3cc,https://www.globe.com.ph,legit,n.a.,n.a.,page could not be checked
+ec06d30a1311,https://www.jollibee.com.ph,legit,1,0,"Only 1 of 4 kinds of business information found (missing: business address, contact details, registration number)."
+8bfaa86551f5,https://www.philippineairlines.com,legit,0,0,
+6d18d6e2ac5c,https://www.cebupacificair.com,legit,n.a.,n.a.,page could not be checked
+38958239570a,https://www.nationalbookstore.com,legit,1,0,"Only 1 of 4 kinds of business information found (missing: business address, contact details, registration number)."

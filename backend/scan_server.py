@@ -17,8 +17,13 @@ import requests
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
+from structural import analyze_structure  # s1 and s2 from the paper (Table 3.6.1)
+
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000"])
+# Ports for the usual ways of serving the front end (3000 = http.server / serve,
+# 5500 = VS Code "Go Live"). Add yours here if it is different.
+_FRONTEND_PORTS = (3000, 5500, 5501, 8000, 8080)
+CORS(app, origins=[f"http://{h}:{p}" for h in ("localhost", "127.0.0.1") for p in _FRONTEND_PORTS])
 
 _TIMEOUT = 8          # seconds
 _MAX_BYTES = 500_000  # 500 KB
@@ -185,8 +190,6 @@ def scan():
 
     if _detect_payment_request(html):
         signals.append("payment_request")
-    if _detect_no_business_info(html):
-        signals.append("no_business_info")
     if _detect_hidden_redirect(html):
         signals.append("hidden_redirect")
     if _detect_copied_layout(html):
@@ -206,10 +209,21 @@ def scan():
         "suspiciousTld": domain_info["tld"],
     }
 
+    # Structural analysis (s1, s2). Kept separate from "signals" so the existing
+    # front end keeps working; read it from the "structural" field.
+    structural = analyze_structure(html, meta["finalUrl"])
+    # s1 and s2 replace the old loose "no_business_info" check. If the page could
+    # not be checked (None) no sign is raised: n.a. is never treated as 0.
+    if structural["s1"] == 1:
+        signals.append("no_business_info")
+    if structural["s2"] == 1:
+        signals.append("suspicious_design")
+
     return jsonify({
         "signals": signals,
         "evidence": evidence,
         "flagCount": len(signals),
+        "structural": structural,
     })
 
 

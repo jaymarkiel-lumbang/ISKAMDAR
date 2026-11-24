@@ -4,9 +4,8 @@ echo Starting ISKAMDAR scan server on http://localhost:5000
 echo Press Ctrl+C to stop.
 echo.
 
-REM Install/upgrade dependencies silently if needed
-py -m pip install flask flask-cors requests --quiet
+python -m pip install flask flask-cors requests playwright py3langid --quiet
 
 echo.
-py "%~dp0scan_server.py"
+python "%~dp0scan_server.py"
 pause
