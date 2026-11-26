@@ -150,11 +150,11 @@
         <div class="about-hero__main">
           <p class="eyebrow eyebrow--left">Scam-detection framework</p>
           <h1 class="about-hero__title" id="about-title">Check the page.<br>Not just the post.</h1>
-          <p class="about-hero__lead">Iskamdar checks job and investment messages for signs of scams. Paste a suspicious link, a text message, or both &mdash; the detection engine analyzes its wording and returns a risk score with a plain-language list of what looked suspicious.</p>
+          <p class="about-hero__lead">Iskamdar checks messages and links for signs of scams and phishing. Paste a suspicious link, a text message, or both &mdash; the detection engine analyzes its wording and returns a risk score with a plain-language list of what looked suspicious.</p>
 
           <form class="check-form check-form--left" data-check-form novalidate>
             <label class="sr-only" for="about-input">Link or message to check</label>
-            <input class="check-form__input" id="about-input" name="q" type="text" placeholder="Paste the text message or job offer here, a link, or both" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="4000">
+            <input class="check-form__input" id="about-input" name="q" type="text" placeholder="Paste the text message here, a link, or both" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="4000">
             <button class="btn btn--primary btn--lg" type="submit">Check Now</button>
           </form>
           <p class="form-hint form-hint--left">Works on links and SMS text &mdash; paste either one, or both.</p>
@@ -169,7 +169,7 @@
             </li>
             <li>
               <h3>Scam language patterns</h3>
-              <p>Upfront fees, urgency, unrealistic pay and requests for private details are flagged.</p>
+              <p>Upfront fees, urgency and requests for private details are flagged.</p>
             </li>
             <li>
               <h3>Checked the moment it matters</h3>
@@ -181,12 +181,12 @@
 
       <section class="problem container" aria-label="The core problem">
         <div class="problem__row">
-          <p class="problem__stat">~3x</p>
-          <p>Reports of scam job and investment posts in the Philippines have nearly tripled in a year.</p>
+          <p class="problem__stat">Rising</p>
+          <p>Scam and phishing links keep spreading through text messages and chat apps in the Philippines.</p>
         </div>
         <div class="problem__row">
           <p class="problem__label">Core Problem</p>
-          <p>Most existing tools only read the words in a job post, not the actual webpage, and none warn users while browsing. Iskamdar checks the real page, at the moment it matters, from the web app.</p>
+          <p>Most existing tools only read the words in a message, not the actual webpage, and none warn users while browsing. Iskamdar checks the real page, at the moment it matters, from the web app.</p>
         </div>
       </section>
 
@@ -199,7 +199,7 @@
           <ol class="pipeline__grid">
             <li><span class="pipeline__num">01</span><h3>Input</h3><p>The user shares a link or pastes an SMS text into the web app.</p></li>
             <li><span class="pipeline__num">02</span><h3>Routing</h3><p>The system determines whether the input is a link, a message, or both, and routes it accordingly.</p></li>
-            <li><span class="pipeline__num">03</span><h3>Text analysis</h3><p>Message text is scanned for scam language patterns &mdash; urgency phrasing, unrealistic pay claims, and more.</p></li>
+            <li><span class="pipeline__num">03</span><h3>Text analysis</h3><p>Message text is scanned for scam language patterns &mdash; urgency phrasing, requests for money or private details, and more.</p></li>
             <li class="is-soon"><span class="pipeline__num">04</span><h3>Fetching</h3><p>For a link, the system loads the real page in the background.</p><span class="pipeline__soon">Upcoming soon</span></li>
             <li class="is-soon"><span class="pipeline__num">05</span><h3>Structural check</h3><p>The page's design and layout are scanned for known scam patterns.</p><span class="pipeline__soon">Upcoming soon</span></li>
             <li class="is-soon"><span class="pipeline__num">06</span><h3>Behavior check</h3><p>Sign-up prompts, payment requests and redirects are checked as the page runs.</p><span class="pipeline__soon">Upcoming soon</span></li>
@@ -216,7 +216,7 @@
           <li>
             <span class="stage-pill stage-pill--share">Share</span>
             <h3>You share the link or message</h3>
-            <p>Paste the text message or job offer here, a link, or both.</p>
+            <p>Paste the text message here, a link, or both.</p>
           </li>
           <li>
             <span class="stage-pill stage-pill--scan">Scan</span>

@@ -43,12 +43,6 @@
     maxInputLength: 4000,
   });
 
-  // Entry-level pay above this per-day figure (PHP) is treated as unrealistic.
-  // ~2.5x the Metro Manila minimum daily wage. A heuristic, not a legal line.
-  const HIGH_DAILY_PHP = 2000;
-  const VERY_HIGH_DAILY_PHP = 5000;
-  const USD_TO_PHP = 56;
-
   const LEVEL_THRESHOLDS = Object.freeze({ high: 70, medium: 30 });
 
   const LEVELS = Object.freeze({
@@ -74,8 +68,8 @@
 
   const AGENCIES = Object.freeze({
     pnp: { name: 'PNP Anti-Cybercrime', code: 'PNP' },
-    dole: { name: 'DOLE / DMW', code: 'DOLE' },
-    sec: { name: 'Securities and Exchange Commission EIPD', code: 'SEC' },
+    nbi: { name: 'NBI Cybercrime Division', code: 'NBI' },
+    cicc: { name: 'DICT Cybercrime Investigation and Coordinating Center', code: 'CICC' },
   });
 
   const STORAGE_KEY = 'iskamdar.scan.v1';
@@ -90,44 +84,20 @@
     upfront_payment: {
       source: 'text', severity: 'danger', weight: 0.85,
       title: 'Upfront payment requested',
-      detail: 'Asks for a fee before you are hired or paid. Real employers never charge for hiring, training or equipment.',
+      detail: 'Asks you to pay a fee or send money before you get anything. Real companies and banks do not ask for this by message.',
       clause: 'asks you to pay money upfront',
-    },
-    check_clearing: {
-      source: 'text', severity: 'danger', weight: 0.8,
-      title: 'Check-clearing setup',
-      detail: 'Asks you to deposit a check and spend part of it on equipment. The check bounces days later and the money is taken from you.',
-      clause: 'asks you to buy equipment with a check you deposit, a common check-clearing fraud method',
     },
     sensitive_data: {
       source: 'text', severity: 'danger', weight: 0.7,
       title: 'Asks for private details',
-      detail: 'Requests passwords, OTPs, card numbers or ID photos. A real employer does not need these to hire you.',
+      detail: 'Requests passwords, OTPs, card numbers or ID photos. A real company or bank never asks for these by message.',
       clause: 'asks for private details such as OTPs, passwords or ID photos',
-    },
-    guaranteed_returns: {
-      source: 'text', severity: 'danger', weight: 0.8,
-      title: 'Guaranteed returns',
-      detail: 'Promises fixed or risk-free profit. Every real investment carries risk.',
-      clause: 'promises guaranteed or risk-free profits',
-    },
-    unrealistic_pay: {
-      source: 'text', severity: 'warn', weight: 0.55,
-      title: 'Unrealistic salary',
-      detail: 'High pay claimed for entry-level or easy work, far above the market rate.',
-      clause: 'promises unrealistically high pay for easy work',
     },
     urgency: {
       source: 'text', severity: 'warn', weight: 0.45,
       title: 'Urgent pressure tactics',
-      detail: 'Phrases like "limited slots" push you to decide before you can check anything.',
+      detail: 'Phrases like "act now" or "limited time" push you to decide before you can check anything.',
       clause: 'uses urgent pressure tactics to rush your decision',
-    },
-    instant_hire: {
-      source: 'text', severity: 'warn', weight: 0.3,
-      title: 'Hired without an interview',
-      detail: 'You are told you are hired or selected without any application, interview or assessment.',
-      clause: 'says you are hired without an interview',
     },
     off_platform: {
       source: 'text', severity: 'warn', weight: 0.3,
@@ -188,9 +158,9 @@
     },
     offer_keywords: {
       source: 'url', severity: 'warn', weight: 0.15,
-      title: 'Offer-style web address',
-      detail: 'The address is built around job or money keywords. Check the company yourself.',
-      clause: 'uses an address built around job or money keywords',
+      title: 'Bait-style web address',
+      detail: 'The address is built around bait words like "verify", "claim" or "prize". Check the sender yourself.',
+      clause: 'uses an address built around bait words like verify, claim or prize',
     },
 
     // ---- page (reported by the scan endpoint) -------------------------
@@ -212,7 +182,7 @@
     payment_request: {
       source: 'page', severity: 'danger', weight: 0.7,
       title: 'Payment requested on the page',
-      detail: 'The page asks for a fee or payment before hiring.',
+      detail: 'The page asks you to pay a fee or send money.',
       clause: 'asks for a payment on the page',
     },
     // s3: three or more hops between websites, or the final website differs from the one first given
@@ -317,7 +287,7 @@
     {
       id: 'upfront_payment', unnegated: true,
       patterns: [
-        /\b(?:processing|registration|training|onboarding|activation|application|medical|uniform|reservation|clearance|slot)\s+(?:fees?|payments?|charges?)\b/i,
+        /\b(?:processing|registration|verification|activation|reservation|clearance|release|delivery|unlock|slot)\s+(?:fees?|payments?|charges?)\b/i,
         /\b(?:send|pay|deposit|transfer|remit)\b[^.!?\n]{0,40}\b(?:fees?|gcash|maya|paymaya|crypto|bitcoin|gift ?cards?)\b/i,
         /\b(?:pay|send)\b[^.!?\n]{0,25}(?:₱|php\s?)\d/i,
         // Tagalog / Taglish: "Mag-send ng P1,000", "magbayad ng P5,000", "mag-deposit ng P500"
@@ -325,30 +295,10 @@
       ],
     },
     {
-      id: 'check_clearing', unnegated: true,
-      patterns: [
-        /\b(?:digital|mobile|cashier'?s?|personal)\s+che(?:ck|que)s?\b/i,
-        /\b(?:deposit|cash)\b[^.!?\n]{0,30}\bche(?:ck|que)s?\b/i,
-      ],
-    },
-    {
       id: 'sensitive_data', unnegated: true,
       patterns: [
         /\b(?:send|provide|share|submit|give|enter)\b[^.!?\n]{0,40}\b(?:otp|one[- ]time (?:pin|password|code)|password|pin(?: code)?|cvv|card number|bank (?:details|account)|selfie with (?:your )?id|id (?:photo|picture|selfie))\b/i,
         /\b(?:ibigay|ipadala|i-?send|i-?share|ilagay)\b[^.!?\n]{0,40}\b(?:otp|password|pin|gcash number|account number|bank details)\b/i,
-      ],
-    },
-    {
-      id: 'guaranteed_returns', unnegated: true,
-      patterns: [
-        /\b(?:guaranteed|sure|risk[- ]?free|no[- ]risk)\b[^.!?\n]{0,30}\b(?:profits?|returns?|income|earnings|payouts?)\b/i,
-        /\bdouble (?:your|the) (?:money|investment)\b/i,
-        /\b\d{2,3}\s?%\s*(?:daily|weekly|monthly|per (?:day|week|month)|roi|returns?)\b/i,
-        // Tagalog / Taglish: "dodoble ang pera", "kikita ka ng P1,500", "walang talo/lugi/risk", "garantisado"
-        /\b(?:dodoble|doblehin|doble|triplehin)\b[^.!?\n]{0,30}\b(?:pera|puhunan|investment|kita)\b/i,
-        /\bkikita\s+(?:ka|ng)\b[^.!?\n]{0,40}(?:₱|php|\bp)\s?\d/i,
-        /\bwala(?:ng)?\s+(?:talo|lugi|risk|panganib)\b/i,
-        /\bgarantisad[oa]\b/i,
       ],
     },
     {
@@ -361,47 +311,10 @@
       ],
     },
     {
-      id: 'instant_hire',
-      patterns: [
-        /\b(?:you'?re hired|you are hired|congratulations|congrats|you(?:'ve| have) been (?:selected|chosen|hired)|no interview|hired (?:already|immediately|instantly))\b/i,
-        /\b(?:walang\s+interview|ikaw ay napili|napili ka|pumasa ka na|pasado ka na|pass ka na)\b/i,
-      ],
-    },
-    {
       id: 'off_platform',
       patterns: [/\b(?:telegram|whatsapp|viber|wechat)\b/i, /\bt\.me\//i, /\bwa\.me\//i],
     },
   ];
-
-  const PAY_RE = /(₱|php|\$|usd)?\s?(\d+(?:\.\d+)?)\s?(k)?\s*(pesos|php|usd|dollars)?\s*(?:\/|per\s+|a\s+|every\s+|each\s+|kada\s+|bawat\s+)?(hours?|hrs?|hourly|days?|daily|weeks?|weekly|months?|monthly|araw|linggo|buwan|oras)\b/gi;
-  const PER_DAY = { hour: 8, hr: 8, day: 1, week: 0.2, month: 1 / 22 };
-  const EASY_WORK = /\b(?:no experience|entry[- ]level|easy|simple|just|only|part[- ]?time|from home|few (?:hours|minutes)|no (?:skills|degree)|anyone can|beginner|data entry|typing|tasks?|walang\s+(?:experience|puhunan|interview)|madali(?:ng)?|kahit\s+sino|sa\s+bahay|home[- ]?based)\b/i;
-
-  function periodKey(word) {
-    const w = word.toLowerCase();
-    if (w.startsWith('h') || w.startsWith('or')) return 'hour';
-    if (w.startsWith('d') || w.startsWith('ar')) return 'day';
-    if (w.startsWith('w') || w.startsWith('li')) return 'week';
-    return 'month';
-  }
-
-  /** Returns a weight (0 if the pay looks normal). */
-  function detectUnrealisticPay(text) {
-    const clean = text.replace(/(\d),(?=\d{3}\b)/g, '$1');
-    const easy = EASY_WORK.test(clean);
-    let best = 0;
-    for (const m of clean.matchAll(PAY_RE)) {
-      let amount = parseFloat(m[2]) * (m[3] ? 1000 : 1);
-      if (!Number.isFinite(amount)) continue;
-      const usd = /^(?:\$|usd)$/i.test(m[1] || '') || /^(?:usd|dollars)$/i.test(m[4] || '');
-      if (usd) amount *= USD_TO_PHP;
-      const daily = amount * PER_DAY[periodKey(m[5])];
-      if (daily >= VERY_HIGH_DAILY_PHP || (daily >= HIGH_DAILY_PHP && easy)) {
-        best = Math.max(best, easy ? SIGNALS.unrealistic_pay.weight : 0.35);
-      }
-    }
-    return best;
-  }
 
   function analyzeText(text) {
     const found = [];
@@ -410,8 +323,6 @@
         found.push({ id: rule.id });
       }
     }
-    const payWeight = detectUnrealisticPay(text);
-    if (payWeight) found.push({ id: 'unrealistic_pay', weight: payWeight });
     return found;
   }
 
@@ -459,9 +370,6 @@
     { token: 'gcash', official: ['gcash.com'] },
     { token: 'paypal', official: ['paypal.com'] },
     { token: 'facebook', official: ['facebook.com'] },
-    { token: 'jobstreet', official: ['jobstreet.com', 'jobstreet.com.ph'] },
-    { token: 'linkedin', official: ['linkedin.com'] },
-    { token: 'indeed', official: ['indeed.com', 'ph.indeed.com'] },
     { token: 'unionbank', official: ['unionbankph.com'] },
     { token: 'metrobank', official: ['metrobank.com.ph'] },
     { token: 'lazada', official: ['lazada.com.ph', 'lazada.com'] },
@@ -472,11 +380,8 @@
     { token: 'bdo', official: ['bdo.com.ph'], exact: true },
     { token: 'bpi', official: ['bpi.com.ph'], exact: true },
     { token: 'sss', official: ['sss.gov.ph'], exact: true },
-    { token: 'dole', official: ['dole.gov.ph'], exact: true },
-    { token: 'dmw', official: ['dmw.gov.ph'], exact: true },
-    { token: 'sec', official: ['sec.gov.ph'], exact: true },
   ];
-  const OFFER_WORDS = /(?:job-?offer|hiring-?now|work-?from-?home|earn-?(?:fast|daily|money)|easy-?money|investment|crypto|double|profit|loan|claim|prize|giveaway)/i;
+  const OFFER_WORDS = /(?:verify|verification|secure-?login|account-?update|confirm|unlock|suspended|claim|prize|reward|giveaway)/i;
 
   function registrableDomain(host) {
     const labels = host.split('.');
@@ -576,18 +481,6 @@
     return 'low';
   }
 
-  function detectCategory(input, signals) {
-    const ids = new Set(signals.map((s) => s.id));
-    const job = /\b(?:job|hiring|hired|vacanc|position|salary|work[- ]from[- ]home|recruit|applicant|application|employ)/i.test(input)
-      || ['unrealistic_pay', 'instant_hire', 'check_clearing'].some((id) => ids.has(id));
-    const investment = /\b(?:invest|returns?|profit|trading|trader|crypto|forex|capital|loan|dividend|roi)\b/i.test(input)
-      || ids.has('guaranteed_returns');
-    if (job && investment) return 'both';
-    if (job) return 'job';
-    if (investment) return 'investment';
-    return 'general';
-  }
-
   function displayFor(routed) {
     if (!routed.urls.length) return 'Message text scan';
     const u = routed.urls[0];
@@ -645,7 +538,6 @@
       signals,
       score,
       level: levelFor(score),
-      category: detectCategory(input, signals),
       pageScanned,
       evidence,
       flagCount,
@@ -664,9 +556,9 @@
 
   function buildExplanation(scan) {
     if (scan.level === 'low') {
-      return 'No major warning signs were found in what you shared. That does not prove it is safe: confirm the company yourself before you share details or pay anything.';
+      return 'No major warning signs were found in what you shared. That does not prove it is safe: confirm with the real company or bank yourself before you share details or pay anything.';
     }
-    const subject = scan.kind === 'message' ? 'message' : scan.kind === 'link' ? 'link' : 'offer';
+    const subject = scan.kind === 'message' ? 'message' : scan.kind === 'link' ? 'link' : 'message and link';
     const clauses = scan.signals.slice(0, 4).map((s) => sig(s).clause);
     return scan.level === 'high'
       ? `This ${subject} ${joinList(clauses)}.`
@@ -739,7 +631,6 @@
         signals: ids.map((id) => ({ id, weight: SIGNALS[id].weight })),
         score,
         level: levelFor(score),
-        category: 'general',
         pageScanned: false,
         evidence: {},
         flagCount: null,
@@ -885,12 +776,8 @@
     noteEl.textContent = note;
     noteEl.hidden = !note;
 
-    // Agencies: mark the best match for this kind of scam.
-    const best = {
-      pnp: scan.category === 'general',
-      dole: scan.category === 'job' || scan.category === 'both',
-      sec: scan.category === 'investment' || scan.category === 'both',
-    };
+    // Agencies: PNP is the default best match for online scams.
+    const best = { pnp: true };
     $$('.agency').forEach((row) => {
       const key = row.dataset.agencyRow;
       row.dataset.recommended = String(Boolean(best[key]));
@@ -898,7 +785,7 @@
     });
 
     $('#flag-count').textContent = scan.flagCount !== null
-      ? `This kind of offer has been flagged ${scan.flagCount} times this month.`
+      ? `This kind of scam has been flagged ${scan.flagCount} times this month.`
       : 'Share this report to warn the people you know.';
   }
 
@@ -918,7 +805,7 @@
     ]],
     ['Also observed', 'For your information, not part of the score', false, [
       ['e1', 'Form asking for sensitive details', null, 'behavioral'],
-      ['e2', 'Fake live-earnings pop-ups', null, 'behavioral'],
+      ['e2', 'Fake live-activity pop-ups', null, 'behavioral'],
       ['e3', 'Blocked right-click or selection', null, 'behavioral'],
     ]],
   ];
@@ -1031,7 +918,7 @@
 
   function renderTrends() {
     const groups = [
-      ['text', 'What the message says', 'Scam language that shows up in SMS messages and job posts.'],
+      ['text', 'What the message says', 'Scam language that shows up in SMS messages and chats.'],
       ['url', 'What the link looks like', 'Tricks in the web address itself.'],
       ['page', 'What the page does', 'Behavior and design found by loading the real page.'],
     ];
@@ -1335,7 +1222,7 @@
     const scan = state.scan;
     if (!scan) return;
     const link = $('#share-link').value || makeShareLink(scan);
-    const text = `Careful: Iskamdar flagged this offer (${LEVELS[scan.level].label.toLowerCase()}, ${scan.score}/100). See the report:`;
+    const text = `Careful: Iskamdar flagged this message (${LEVELS[scan.level].label.toLowerCase()}, ${scan.score}/100). See the report:`;
     const open = (url) => window.open(url, '_blank', 'noopener,noreferrer');
     const mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
@@ -1582,7 +1469,7 @@
 
     const items = [
       ['Text, page-structure and behavior analysis', 'Paste a message, a link, or both. A link is opened in a safe browser that only watches: it never clicks, types or pays. This takes about 15 seconds.'],
-      ['Not a guarantee', 'A low risk result does not prove an offer is real. Always verify before responding.'],
+      ['Not a guarantee', 'A low risk result does not prove a message or link is safe. Always verify before responding.'],
       ['Demo mode', 'Reports are not sent to any agency, and nothing you paste is stored on a server.'],
     ];
     const card = el('aside', { class: 'demo-note', role: 'complementary', 'aria-label': 'Demo version notice' }, [
