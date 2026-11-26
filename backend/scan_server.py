@@ -7,10 +7,15 @@ Run:  py backend/scan_server.py
 """
 
 import ipaddress
+import json
 import re
 import socket
+import subprocess
+import sys
+import threading
 import time
 from datetime import datetime, timezone
+from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
@@ -85,46 +90,12 @@ def _fetch(url: str) -> tuple[str, dict]:
 # Signal detectors
 # ---------------------------------------------------------------------------
 
-def _detect_payment_request(html: str) -> bool:
-    patterns = [
-        r"(?i)(send\s+money|wire\s+transfer|bank\s+transfer|gcash|paymaya|bitcoin|crypto\s+payment)",
-        r"(?i)(pay\s+now|payment\s+required|enter\s+card|credit\s+card\s+number)",
-    ]
-    return any(re.search(p, html) for p in patterns)
-
-
 def _detect_no_business_info(html: str) -> bool:
     has_contact = bool(re.search(
         r"(?i)(contact\s+us|about\s+us|privacy\s+policy|terms\s+of\s+service|@[\w.]+\.[a-z]{2,})",
         html,
     ))
     return not has_contact
-
-
-def _detect_hidden_redirect(html: str) -> bool:
-    # meta refresh or JS location redirects hidden in obfuscated code
-    patterns = [
-        r"(?i)<meta[^>]+http-equiv=['\"]refresh['\"][^>]*>",
-        r"(?i)window\.location\s*=\s*['\"]https?://(?!localhost)",
-        r"(?i)document\.location\.href\s*=",
-    ]
-    return any(re.search(p, html) for p in patterns)
-
-
-def _detect_countdown_timer(html: str) -> bool:
-    patterns = [
-        r"(?i)(countdown|time.?left|offer\s+expires|limited\s+time|act\s+now|only\s+\d+\s+(hours?|minutes?|seconds?)\s+left)",
-        r"(?i)(setInterval|setTimeout)[^;]{0,80}(timer|count|second)",
-    ]
-    return any(re.search(p, html) for p in patterns)
-
-
-def _detect_forced_signup(html: str) -> bool:
-    patterns = [
-        r"(?i)(sign\s*up\s+to\s+(continue|access|unlock|view)|create\s+account\s+to\s+(get|claim|receive))",
-        r"(?i)(register\s+now\s+to|join\s+now\s+to\s+get)",
-    ]
-    return any(re.search(p, html) for p in patterns)
 
 
 def _detect_copied_layout(html: str) -> bool:
@@ -165,6 +136,45 @@ def _detect_new_domain(hostname: str) -> dict:
 # Main endpoint
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Behavioral analysis runs in its own process (behavioral.py). That keeps the
+# browser away from the web server's threads, and a crash or a stuck page can
+# be stopped without taking the server down.
+# ---------------------------------------------------------------------------
+
+_BEHAVIOR_SCRIPT = Path(__file__).resolve().parent / "behavioral.py"
+_BEHAVIOR_LIMIT = 45                       # seconds, whole process
+_behavior_slots = threading.Semaphore(2)   # at most 2 browsers at once
+
+
+def _unavailable(note: str) -> dict:
+    return {"available": False, "notes": [note],
+            "s3": None, "s4": None, "s5": None, "s6": None,
+            "e1": None, "e2": None, "e3": None,
+            "s3Note": None, "s4Note": None, "s5Note": None, "s6Note": None,
+            "redirectChain": [], "finalUrl": None, "observed": {}}
+
+
+def _run_behavior(target: str) -> dict:
+    """Watch the page. The address is the one the visitor was given, so the
+    redirect check (s3) starts from it."""
+    if not _behavior_slots.acquire(timeout=5):
+        return _unavailable("Behavioral check not available: the scanner is busy.")
+    try:
+        done = subprocess.run(
+            [sys.executable, str(_BEHAVIOR_SCRIPT), target],
+            capture_output=True, text=True, timeout=_BEHAVIOR_LIMIT,
+        )
+        line = (done.stdout or "").strip().splitlines()[-1] if (done.stdout or "").strip() else ""
+        return json.loads(line) if line else _unavailable("Behavioral check not available: no result.")
+    except subprocess.TimeoutExpired:
+        return _unavailable("Behavioral check not available: the page took too long.")
+    except Exception as exc:
+        return _unavailable(f"Behavioral check not available: {exc.__class__.__name__}")
+    finally:
+        _behavior_slots.release()
+
+
 @app.route("/scan", methods=["POST"])
 def scan():
     body = request.get_json(silent=True) or {}
@@ -188,16 +198,8 @@ def scan():
 
     signals = []
 
-    if _detect_payment_request(html):
-        signals.append("payment_request")
-    if _detect_hidden_redirect(html):
-        signals.append("hidden_redirect")
     if _detect_copied_layout(html):
         signals.append("copied_layout")
-    if _detect_countdown_timer(html):
-        signals.append("countdown_timer")
-    if _detect_forced_signup(html):
-        signals.append("forced_signup")
 
     domain_info = _detect_new_domain(hostname)
     if domain_info["detected"]:
@@ -219,11 +221,21 @@ def scan():
     if structural["s2"] == 1:
         signals.append("suspicious_design")
 
+    # Behavioral analysis (s3 to s6, plus e1 to e3 which are shown but not scored).
+    # The page is opened in a headless browser, so this takes about 12 seconds.
+    # If it cannot run, the signs are n.a. and no sign is raised.
+    behavioral = _run_behavior(url)
+    for sign, sig_id in (("s3", "hidden_redirect"), ("s4", "forced_signup"),
+                         ("s5", "payment_request"), ("s6", "countdown_timer")):
+        if behavioral.get(sign) == 1:
+            signals.append(sig_id)
+
     return jsonify({
         "signals": signals,
         "evidence": evidence,
         "flagCount": len(signals),
         "structural": structural,
+        "behavioral": behavioral,
     })
 
 

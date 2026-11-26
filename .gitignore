@@ -6,3 +6,7 @@ outputs/
 data/
 
 .claude/
+out/
+urls_live.csv
+urls_scam.csv
+WEB/*.bak*

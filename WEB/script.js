@@ -24,7 +24,8 @@
     //   POST { url } -> { signals: [ids], evidence: { pageAgeDays, registrar }, flagCount }
     // Only ids with source "page" in SIGNALS below are accepted.
     // Leave '' to score from the link and message text only (no network).
-    pageScanEndpoint: 'http://localhost:5000/scan', // page scan: structural check (s1, s2) from scan_server.py
+    pageScanEndpoint: 'http://localhost:5000/scan', // page scan: structural (s1, s2) and behavioral (s3 to s6)
+    scanTimeoutMs: 40000, // the behavioral check watches the page for about 12 seconds
 
     // Endpoint that receives agency reports.
     //   POST { agency, score, level, input, urls, flags, note, createdAt } -> { reference }
@@ -207,17 +208,19 @@
       detail: 'The page looks bare or unfinished instead of like a real business page.',
       clause: 'looks bare or unfinished, unlike a real business page',
     },
+    // s5: a payment word (fee, deposit, recharge, bayad) next to an amount or account, in an instruction to pay
     payment_request: {
       source: 'page', severity: 'danger', weight: 0.7,
       title: 'Payment requested on the page',
       detail: 'The page asks for a fee or payment before hiring.',
       clause: 'asks for a payment on the page',
     },
+    // s3: three or more hops between websites, or the final website differs from the one first given
     hidden_redirect: {
       source: 'page', severity: 'danger', weight: 0.6,
-      title: 'Hidden redirect',
-      detail: 'The page sends you somewhere else without telling you.',
-      clause: 'redirects you without telling you',
+      title: 'Redirect to another website',
+      detail: 'The link sends you to a different website than the one it started with.',
+      clause: 'sends you to a different website than the link shows',
     },
     copied_layout: {
       source: 'page', severity: 'danger', weight: 0.6,
@@ -225,17 +228,19 @@
       detail: 'The design copies a known company or agency page.',
       clause: 'copies the layout of a known company or agency',
     },
+    // s6: a clock that really counts down, read twice a few seconds apart
     countdown_timer: {
       source: 'page', severity: 'warn', weight: 0.45,
       title: 'Countdown timer',
-      detail: 'A fake clock is pushing you to decide fast.',
+      detail: 'A clock on the page counts down to push you to decide fast.',
       clause: 'shows a countdown timer to rush you',
     },
+    // s4: a sign-up or login box covers the page and hides the offer
     forced_signup: {
       source: 'page', severity: 'warn', weight: 0.4,
-      title: 'Forced sign-up',
-      detail: 'The page demands an account or personal details before showing anything.',
-      clause: 'forces you to sign up before showing anything',
+      title: 'Forced registration',
+      detail: 'A sign-up or login box covers the page and hides the offer until you register.',
+      clause: 'forces you to register before showing the offer',
     },
     new_domain: {
       source: 'page', severity: 'warn', weight: 0.4,
@@ -509,7 +514,7 @@
 
   async function scanPage(url) {
     const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), CONFIG.requestTimeoutMs);
+    const timer = setTimeout(() => ctrl.abort(), CONFIG.scanTimeoutMs);
     try {
       const res = await fetch(CONFIG.pageScanEndpoint, {
         method: 'POST',
@@ -536,10 +541,19 @@
     if (st && typeof st.s1Note === 'string') details.no_business_info = st.s1Note.slice(0, 300);
     if (st && typeof st.s2Note === 'string') details.suspicious_design = st.s2Note.slice(0, 300);
     const structural = st && st.available ? { s1: st.s1, s2: st.s2 } : null;
+    const bh = data?.behavioral ?? null;
+    if (bh) {
+      [['s3Note', 'hidden_redirect'], ['s4Note', 'forced_signup'], ['s5Note', 'payment_request'], ['s6Note', 'countdown_timer']]
+        .forEach(([k, id]) => { if (typeof bh[k] === 'string') details[id] = bh[k].slice(0, 300); });
+    }
+    const behavioral = bh && bh.available
+      ? { s3: bh.s3, s4: bh.s4, s5: bh.s5, s6: bh.s6, e1: bh.e1, e2: bh.e2, e3: bh.e3 }
+      : null;
     return {
       ids,
       details,
       structural,
+      behavioral,
       evidence: {
         pageAgeDays,
         registrar: typeof ev.registrar === 'string' ? ev.registrar.slice(0, 60) : null,
@@ -611,7 +625,7 @@
       try {
         const scan = await scanPage(routed.urls[0].href);
         scan.ids.forEach((id) => add({ id, ...(scan.details[id] ? { detail: scan.details[id] } : {}) }));
-        evidence = { ...scan.evidence, structural: scan.structural };
+        evidence = { ...scan.evidence, structural: scan.structural, behavioral: scan.behavioral };
         flagCount = null; // server flagCount is signs on this page, not a monthly report count
         pageScanned = true;
       } catch (err) {
@@ -888,43 +902,108 @@
       : 'Share this report to warn the people you know.';
   }
 
-  function structuralLabel(st, key) {
-    if (!st) return 'Not checked';
-    if (st[key] === 1) return 'Warning sign found';
-    if (st[key] === 0) return 'Not found';
-    return 'Not available';
+  /* ---- Deep analysis dialog (Learn more) ---------------------------- */
+
+  // s1 to s6 enter the model (paper Table 3.8.1). e1 to e3 are only shown (Table 3.7.2).
+  const DEEP_GROUPS = [
+    ['Structure', 'What the page shows', true, [
+      ['s1', 'Business information', 'no_business_info', 'structural'],
+      ['s2', 'Page design', 'suspicious_design', 'structural'],
+    ]],
+    ['Behavior', 'What the page does', true, [
+      ['s3', 'Redirect to another website', 'hidden_redirect', 'behavioral'],
+      ['s4', 'Forced registration', 'forced_signup', 'behavioral'],
+      ['s5', 'Payment request', 'payment_request', 'behavioral'],
+      ['s6', 'Countdown timer', 'countdown_timer', 'behavioral'],
+    ]],
+    ['Also observed', 'For your information, not part of the score', false, [
+      ['e1', 'Form asking for sensitive details', null, 'behavioral'],
+      ['e2', 'Fake live-earnings pop-ups', null, 'behavioral'],
+      ['e3', 'Blocked right-click or selection', null, 'behavioral'],
+    ]],
+  ];
+
+  function checkState(group, key, severity, scored) {
+    if (!group) return { tone: 'idle', text: 'Not checked' };
+    if (group[key] === 1) {
+      return scored
+        ? { tone: severity === 'warn' ? 'warn' : 'danger', text: 'Warning sign found' }
+        : { tone: 'info', text: 'Seen on the page' };
+    }
+    if (group[key] === 0) return scored ? { tone: 'ok', text: 'Not found' } : { tone: 'idle', text: 'Not seen' };
+    return { tone: 'idle', text: 'Not available' };
+  }
+
+  function pill(tone, text) {
+    return el('span', { class: 'dx__st dx__st--' + tone, text });
   }
 
   function renderDeep(scan) {
+    const dlg = $('#dlg-deep');
+    dlg.dataset.level = scan.level;
+    $('#deep-score').textContent = scan.score;
+    $('#deep-meter').style.width = Math.max(2, Math.min(100, scan.score)) + '%';
+    $('#deep-level').textContent = LEVELS[scan.level].label;
+    $('#deep-lead').textContent = LEVELS[scan.level].heading;
+
+    // red flags
     const flags = $('#deep-flags');
     flags.replaceChildren();
-    if (!scan.signals.length) {
-      flags.append(el('li', {}, [
+    const shown = scan.signals.slice(0, 6);
+    if (!shown.length) {
+      flags.append(el('li', { class: 'dx__flag' }, [
         icon('i-shield-check', 'flags__icon flags__icon--warn'),
-        el('span', { class: 'flags__title', text: 'No red flags' }),
-        el('span', { class: 'flags__text', text: 'Nothing in what you shared matched our scam patterns.' }),
+        el('div', { class: 'dx__flag-text' }, [
+          el('p', { class: 'dx__flag-title', text: 'No red flags' }),
+          el('p', { class: 'dx__flag-detail', text: 'Nothing in what you shared matched our scam patterns.' }),
+        ]),
       ]));
     }
-    scan.signals.slice(0, 6).forEach((s) => {
+    shown.forEach((s) => {
       const info = sig(s);
-      flags.append(el('li', {}, [
+      flags.append(el('li', { class: 'dx__flag' }, [
         icon('i-alert', 'flags__icon' + (info.severity === 'warn' ? ' flags__icon--warn' : '')),
-        el('span', { class: 'flags__title', text: info.title }),
-        el('span', { class: 'flags__text', text: info.detail }),
+        el('div', { class: 'dx__flag-text' }, [
+          el('p', { class: 'dx__flag-title', text: info.title }),
+          el('p', { class: 'dx__flag-detail', text: info.detail }),
+        ]),
       ]));
     });
 
+    // page checks: s1 to s6, grouped
     const ev = scan.evidence || {};
-    const rows = [
-      ['Page age', ev.pageAgeDays != null ? `${ev.pageAgeDays} day${ev.pageAgeDays === 1 ? '' : 's'}` : 'Not checked'],
-      ['Domain registrar', ev.registrar || 'Not checked'],
-      ['Page scan', scan.pageScanned ? 'Completed' : scan.urls.length ? 'Not available' : 'No link given'],
-      ['Business information (s1)', structuralLabel(ev.structural, 's1')],
-      ['Page design (s2)', structuralLabel(ev.structural, 's2')],
-      ['Known scam pattern match', { high: 'High', medium: 'Moderate', low: 'Low' }[scan.level]],
-    ];
-    const body = $('#deep-evidence');
-    body.replaceChildren(...rows.map(([metric, result]) => el('tr', {}, [el('td', { text: metric }), el('td', { text: result })])));
+    const box = $('#deep-evidence');
+    box.replaceChildren();
+
+    const scanned = scan.pageScanned ? 'Completed' : scan.urls.length ? 'Not available' : 'No link given';
+    const meta = [['Page scan', scanned, scan.pageScanned ? 'ok' : 'idle']];
+    if (ev.pageAgeDays != null) meta.push(['Page age', `${ev.pageAgeDays} day${ev.pageAgeDays === 1 ? '' : 's'}`, ev.pageAgeDays < NEW_DOMAIN_DAYS ? 'warn' : 'ok']);
+    if (ev.registrar) meta.push(['Domain registrar', ev.registrar, 'idle']);
+
+    box.append(el('div', { class: 'dx__group' }, [
+      el('div', { class: 'dx__group-head' }, [el('p', { class: 'dx__group-name', text: 'Scan' })]),
+      ...meta.map(([label, value, tone]) => el('div', { class: 'dx__row dx__row--plain' }, [
+        el('span', { class: 'dx__label', text: label }),
+        pill(tone, value),
+      ])),
+    ]));
+
+    DEEP_GROUPS.forEach(([name, note, scored, rows]) => {
+      box.append(el('div', { class: 'dx__group' + (scored ? '' : ' dx__group--extra') }, [
+        el('div', { class: 'dx__group-head' }, [
+          el('p', { class: 'dx__group-name', text: name }),
+          el('p', { class: 'dx__group-note', text: note }),
+        ]),
+        ...rows.map(([id, label, signalId, layer]) => {
+          const st = checkState(ev[layer], id, signalId ? SIGNALS[signalId]?.severity : null, scored);
+          return el('div', { class: 'dx__row' }, [
+            el('span', { class: 'dx__id', text: id }),
+            el('span', { class: 'dx__label', text: label }),
+            pill(st.tone, st.text),
+          ]);
+        }),
+      ]));
+    });
   }
 
   function fillPreview(prefix, scan) {
@@ -1502,7 +1581,7 @@
     const minimized = !(PAGE === 'home' && (navType === 'reload' || (navType === 'navigate' && !fromSite)));
 
     const items = [
-      ['Text and page-structure analysis', 'Paste a message, a link, or both. A link gets a structural check (business information and page design). Behavioral checks are not included yet.'],
+      ['Text, page-structure and behavior analysis', 'Paste a message, a link, or both. A link is opened in a safe browser that only watches: it never clicks, types or pays. This takes about 15 seconds.'],
       ['Not a guarantee', 'A low risk result does not prove an offer is real. Always verify before responding.'],
       ['Demo mode', 'Reports are not sent to any agency, and nothing you paste is stored on a server.'],
     ];

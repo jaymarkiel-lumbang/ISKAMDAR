@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="vendor/bootstrap.min.css">
-  <link rel="stylesheet" href="style.css?v=21">
+  <link rel="stylesheet" href="style.css?v=24">
 </head>
 <body data-page="result">
 
@@ -232,26 +232,37 @@
   </footer>
 
   <!-- Dialogs used on this page -->
-  <dialog class="dlg dlg--lg" id="dlg-deep" aria-labelledby="dlg-deep-title">
-    <div class="dlg__body">
-      <h2 class="dlg__title dlg__title--left" id="dlg-deep-title"><span class="text-blue">Deep Analysis:</span> Understanding the Risk</h2>
-
-      <h3 class="dlg__subtitle">Red Flag Breakdown:</h3>
-      <ul class="flags" id="deep-flags"></ul>
-
-      <div class="dlg__cols">
-        <div>
-          <h3 class="dlg__subtitle">Verifiable Evidence:</h3>
-          <table class="evidence">
-            <thead>
-              <tr><th scope="col">Metric</th><th scope="col">Result</th></tr>
-            </thead>
-            <tbody id="deep-evidence"></tbody>
-          </table>
+  <dialog class="dlg dlg--lg dx" id="dlg-deep" aria-labelledby="dlg-deep-title" data-level="high">
+    <div class="dx__body">
+      <header class="dx__head">
+        <div class="dx__head-text">
+          <h2 class="dx__title" id="dlg-deep-title"><span class="text-blue">Deep Analysis:</span> Understanding the Risk</h2>
+          <p class="dx__lead" id="deep-lead"></p>
         </div>
-        <div>
-          <h3 class="dlg__subtitle">Mitigation Tips:</h3>
-          <ul class="mitigation">
+        <div class="dx__score" aria-label="Risk score">
+          <p class="dx__score-num"><span id="deep-score">0</span><small>%</small></p>
+          <p class="dx__level" id="deep-level">High risk</p>
+          <div class="dx__meter" aria-hidden="true"><i id="deep-meter"></i></div>
+        </div>
+        <button class="dx__x" type="button" data-close aria-label="Close">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </header>
+
+      <section class="dx__section" aria-labelledby="dx-flags-h">
+        <h3 class="dx__h" id="dx-flags-h">Red flag breakdown</h3>
+        <ul class="dx__flags" id="deep-flags"></ul>
+      </section>
+
+      <div class="dx__cols">
+        <section class="dx__section" aria-labelledby="dx-checks-h">
+          <h3 class="dx__h" id="dx-checks-h">Verifiable evidence</h3>
+          <div class="dx__checks" id="deep-evidence"></div>
+        </section>
+
+        <aside class="dx__section dx__tips" aria-labelledby="dx-tips-h">
+          <h3 class="dx__h" id="dx-tips-h">Mitigation tips</h3>
+          <ul class="dx__tiplist">
             <li>Do not transact or share data</li>
             <li>Block and report</li>
             <li>Never cash unverified checks</li>
@@ -259,18 +270,18 @@
             <li>Verify via official accounts</li>
             <li>Report to authorities</li>
           </ul>
-        </div>
+        </aside>
       </div>
 
-      <div class="dlg__actions">
+      <footer class="dx__actions">
         <button class="btn btn--ghost" type="button" data-close>Close</button>
         <a class="btn btn--danger" href="report.html?src=result">Report</a>
-      </div>
+      </footer>
     </div>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=22"></script>
+  <script src="script.js?v=26"></script>
 </body>
 </html>
