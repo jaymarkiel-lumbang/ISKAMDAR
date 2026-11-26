@@ -600,8 +600,30 @@
     return Date.now().toString(36) + rand;
   }
 
+  /* ---- 3d-b. Anonymous scan log for the analytics page ------------ */
+  const ANALYTICS_KEY = 'iskamdar.analytics.live.v1';
+
+  /** Saves one metadata row per scan in this browser. No message text and no URL. */
+  function logForAnalytics({ routed, signals, score, pageScanned, ms }) {
+    try {
+      const inputType = routed.kind === 'both' ? 'both' : routed.kind === 'link' ? 'link' : 'text';
+      const wantedPage = routed.urls.length > 0 && Boolean(CONFIG.pageScanEndpoint);
+      const outcome = wantedPage && !pageScanned ? 'unexamined' : 'scored';
+      const rows = JSON.parse(localStorage.getItem(ANALYTICS_KEY) || '[]');
+      rows.push({
+        ts: Date.now(), inputType, outcome,
+        signs: outcome === 'scored' ? signals.map((s) => s.id) : [],
+        score: outcome === 'scored' ? score : null,
+        failure: outcome === 'unexamined' ? 'Timeout or error' : null,
+        ms: Math.round(ms),
+      });
+      localStorage.setItem(ANALYTICS_KEY, JSON.stringify(rows.slice(-500)));
+    } catch { /* storage unavailable: analytics is optional */ }
+  }
+
   /** The whole pipeline: input -> routing -> text -> link -> page -> score. */
   async function analyze(rawInput) {
+    const startedAt = performance.now();
     const input = String(rawInput).trim().slice(0, CONFIG.maxInputLength);
     const routed = routeInput(input);
     const found = new Map();
@@ -635,6 +657,7 @@
 
     const signals = [...found.values()].sort((a, b) => b.weight - a.weight);
     const score = scoreSignals(signals);
+    logForAnalytics({ routed, signals, score, pageScanned, ms: performance.now() - startedAt });
     return {
       id: newId(),
       createdAt: Date.now(),

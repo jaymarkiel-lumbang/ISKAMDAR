@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analytics | ISKAMDAR</title>
+  <meta name="description" content="Scam scan analytics for ISKAMDAR: how scans are scored across the textual, structural and behavioral layers.">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231a5fa8' d='M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z'/%3E%3Cpath fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='m8.5 12 2.5 2.5 4.5-5'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="vendor/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css?v=24">
+  <link rel="stylesheet" href="analytics.css?v=1">
+</head>
+<body data-page="analytics">
+
+  <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-logo" viewBox="0 0 48 56">
+      <path d="M24 2 4 9v17c0 13 8.5 22 20 28 11.500-6 20-15 20-28V9z" fill="#cfe6f7" stroke="#7fb6e0" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M24 9 11 14v12c0 9 6 15.500 13 19.500C31 41.500 37 35 37 26V14z" fill="#1a5fa8"/>
+      <path d="m17.500 27 4.500 4.500L31 22" fill="none" stroke="#fff" stroke-width="3.500" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-alert" viewBox="0 0 48 48">
+      <path d="M24 5 3 42h42z" class="alert__body" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="22" y="17" width="4" height="14" rx="2" class="alert__mark"/>
+      <circle cx="24" cy="36" r="2.600" class="alert__mark"/>
+    </symbol>
+
+    <symbol id="i-x" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="19" fill="#ff3b3b"/>
+      <path d="M13 13l14 14M27 13 13 27" stroke="#fff" stroke-width="3.500" stroke-linecap="round" fill="none"/>
+    </symbol>
+
+    <symbol id="i-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 13c0 5-3.500 7.500-7.660 8.950a1 1 0 0 1-.67-.01C7.500 20.500 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.500-1.200 6.240-2.720a1.170 1.170 0 0 1 1.520 0C14.510 3.810 17 5 19 5a1 1 0 0 1 1 1z"/>
+      <path d="m9 12 2 2 4-4"/>
+    </symbol>
+
+    <symbol id="i-lock-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 13c0 5-3.500 7.500-7.660 8.950a1 1 0 0 1-.67-.01C7.500 20.500 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.500-1.200 6.240-2.720a1.170 1.170 0 0 1 1.520 0C14.510 3.810 17 5 19 5a1 1 0 0 1 1 1z"/>
+      <rect x="9" y="11" width="6" height="5" rx="1"/>
+      <path d="M10 11V9.500a2 2 0 0 1 4 0V11"/>
+    </symbol>
+
+    <symbol id="i-badge-check" viewBox="0 0 24 24">
+      <path d="M3.850 8.620a4 4 0 0 1 4.780-4.770 4 4 0 0 1 6.740 0 4 4 0 0 1 4.780 4.780 4 4 0 0 1 0 6.740 4 4 0 0 1-4.770 4.780 4 4 0 0 1-6.750 0 4 4 0 0 1-4.780-4.770 4 4 0 0 1 0-6.760Z" fill="#274f7c"/>
+      <path d="m9 12 2 2 4-4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+
+    <symbol id="i-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+      <rect width="20" height="14" x="2" y="6" rx="2"/>
+    </symbol>
+
+    <symbol id="i-landmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7"/>
+      <path d="m12 2 8 5H4z"/>
+    </symbol>
+
+    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M22 21v-2a4 4 0 0 0-3-3.870M16 3.130a4 4 0 0 1 0 7.750"/>
+    </symbol>
+
+    <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+    </symbol>
+
+    <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m15 14 5-5-5-5"/>
+      <path d="M4 20v-7a4 4 0 0 1 4-4h12"/>
+    </symbol>
+
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="14" height="14" x="8" y="8" rx="2"/>
+      <path d="M4 16c-1.100 0-2-.9-2-2V4c0-1.100.9-2 2-2h10c1.100 0 2 .9 2 2"/>
+    </symbol>
+
+    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="20" height="16" x="2" y="4" rx="2"/>
+      <path d="m22 7-8.970 5.700a1.940 1.940 0 0 1-2.060 0L2 7"/>
+    </symbol>
+
+    <symbol id="i-whatsapp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7.900 20A9 9 0 1 0 4 16.100L2 22Z"/>
+      <path d="M9 9.500c0 3 2.500 5.500 5.500 5.500l1.200-1.300-1.900-1-.9.700a4 4 0 0 1-1.800-1.800l.7-.9-1-1.900z" fill="currentColor" stroke="none"/>
+    </symbol>
+
+    <symbol id="i-messenger" viewBox="0 0 24 24">
+      <path d="M12 2C6.500 2 2 6.200 2 11.500c0 2.900 1.300 5.400 3.400 7.100V22l3.100-1.700c1 .3 2 .4 3.500.4 5.500 0 10-4.200 10-9.500S17.500 2 12 2z" fill="currentColor"/>
+      <path d="m6 14 4-4.500 2.500 2.300L18 9l-4 4.500-2.500-2.300z" class="messenger__bolt"/>
+    </symbol>
+
+    <symbol id="i-facebook" viewBox="0 0 24 24">
+      <text x="12" y="21" text-anchor="middle" font-size="26" font-weight="800" font-family="Poppins, Arial, sans-serif" fill="currentColor">f</text>
+    </symbol>
+
+    <symbol id="i-file-pdf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/>
+      <path d="M14 2v4a2 2 0 0 0 2 2h4M10 9H8M16 13H8M16 17H8"/>
+    </symbol>
+
+    <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="18" height="18" x="3" y="3" rx="2"/>
+      <circle cx="9" cy="9" r="2"/>
+      <path d="m21 15-3.090-3.090a2 2 0 0 0-2.820 0L6 21"/>
+    </symbol>
+
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12.500 4.500 4.500L19 7.500"/>
+    </symbol>
+
+    <symbol id="i-avatar" viewBox="0 0 80 80">
+      <rect width="80" height="80" rx="18" fill="#274f7c"/>
+      <circle cx="40" cy="31" r="13" fill="#d4d4d8"/>
+      <path d="M15 80c0-14 10-23 25-23s25 9 25 23z" fill="#d4d4d8"/>
+    </symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="index.html" aria-label="ISKAMDAR home">
+        <svg class="brand__logo" aria-hidden="true"><use href="#i-logo"/></svg>
+        <span class="brand__name">ISKAMDAR</span>
+      </a>
+
+      <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle menu">
+        <span class="nav-toggle__bar"></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a href="index.html#how" data-nav="how">How it works</a>
+        <a href="trends.html" data-nav="trends">Scam Trends</a>
+        <a href="analytics.html" data-nav="analytics">Analytics</a>
+        <a href="index.html#faq" data-nav="faq">FAQ</a>
+        <a href="about.html" data-nav="about">About</a>
+        <a href="report.html" class="site-nav__cta" data-nav="report">Report a scam</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1" class="an">
+
+    <!-- ===== Hero + tabs (shared by every view) ===== -->
+    <section class="an-hero">
+      <div class="an-wrap">
+        <div class="an-tabs" role="tablist" aria-label="Analytics sections" id="an-tabs">
+          <button role="tab" type="button" data-tab="overview" id="tab-overview" aria-controls="view-overview">Overview</button>
+          <button role="tab" type="button" data-tab="risk" id="tab-risk" aria-controls="view-risk">Risk &amp; evidence</button>
+          <button role="tab" type="button" data-tab="model" id="tab-model" aria-controls="view-model">Model lab</button>
+          <button role="tab" type="button" data-tab="playground" id="tab-playground" aria-controls="view-playground">Playground</button>
+          <button role="tab" type="button" data-tab="report" id="tab-report" aria-controls="view-report">Report</button>
+        </div>
+        <h1 class="an-hero__title" id="an-title">Scam scan analytics.</h1>
+        <p class="an-hero__lead" id="an-lead"></p>
+        <div class="an-badges">
+          <span class="an-badge an-badge--amber" title="The scan log is generated for this project. No real person's message is used.">Simulated data</span>
+          <span class="an-badge an-badge--green" title="Metrics are calculated live from a labeled simulated test set.">Model metrics are computed</span>
+          <button type="button" class="an-badge an-badge--blue" id="an-live-chip" hidden></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Filters ===== -->
+    <section class="an-filters-wrap" id="an-filters-wrap">
+      <div class="an-wrap">
+        <div class="an-filters" role="group" aria-label="Filters">
+          <div class="an-filter">
+            <span class="an-filter__label" id="lbl-days">Date range</span>
+            <div class="an-seg" role="radiogroup" aria-labelledby="lbl-days" data-filter="days">
+              <button type="button" role="radio" data-v="7">7 days</button>
+              <button type="button" role="radio" data-v="30">30 days</button>
+              <button type="button" role="radio" data-v="60">60 days</button>
+            </div>
+          </div>
+          <div class="an-filter">
+            <span class="an-filter__label" id="lbl-input">Input type</span>
+            <div class="an-seg" role="radiogroup" aria-labelledby="lbl-input" data-filter="input">
+              <button type="button" role="radio" data-v="all">All</button>
+              <button type="button" role="radio" data-v="text">Text</button>
+              <button type="button" role="radio" data-v="link">Link</button>
+              <button type="button" role="radio" data-v="both">Text + link</button>
+            </div>
+          </div>
+          <div class="an-filter">
+            <span class="an-filter__label" id="lbl-level">Risk level</span>
+            <div class="an-seg" role="radiogroup" aria-labelledby="lbl-level" data-filter="level">
+              <button type="button" role="radio" data-v="all">All</button>
+              <button type="button" role="radio" data-v="low">Low</button>
+              <button type="button" role="radio" data-v="medium">Suspicious</button>
+              <button type="button" role="radio" data-v="high">High</button>
+            </div>
+          </div>
+          <button type="button" class="an-reset" id="an-reset" hidden>Reset filters</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= OVERVIEW ================= -->
+    <div class="an-view" id="view-overview" role="tabpanel" aria-labelledby="tab-overview" hidden>
+      <section class="an-thesis" aria-label="The thesis in one line">
+        <div class="an-wrap">
+          <p class="an-thesis__eyebrow">The thesis in one line</p>
+          <div class="an-thesis__grid">
+            <div class="an-thesis__item"><span class="an-thesis__num an-c-sky" id="th-text">0.00</span><div><strong>Text only</strong><span>F1-score when only the message wording is checked.</span></div></div>
+            <div class="an-thesis__item"><span class="an-thesis__num an-c-amber" id="th-all">0.00</span><div><strong>All three layers</strong><span>F1-score after adding the structural and behavioral layers.</span></div></div>
+            <div class="an-thesis__item"><span class="an-thesis__num an-c-coral" id="th-evasive">0%</span><div><strong>Evasive scams caught</strong><span id="th-evasive-sub">Polished scams with clean text, against 0% with text alone.</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="an-wrap">
+        <div class="an-kpis" id="an-kpis"></div>
+        <p class="an-takeaway"><span class="an-tag">Takeaway</span><span id="ov-takeaway"></span></p>
+
+        <section class="an-sec" data-sec="activity">
+          <header class="an-sec__head"><span class="an-num">01</span><div><h2>Activity over time</h2><p>How many scans were scored, split by risk level</p></div><button type="button" class="an-what" aria-expanded="false">what is this? <i>+</i></button></header>
+          <div class="an-explain" hidden></div>
+          <div class="an-grid an-grid--7-5">
+            <article class="an-card"><header class="an-card__head"><div><h3>Scored scans by risk level</h3><p>Stacked by level, with totals on top</p></div><span class="an-chip">Stacked bars</span></header><div class="an-chart an-chart--tall"><canvas id="ch-stack" aria-label="Stacked bar chart of scored scans per day by risk level" role="img"></canvas></div></article>
+            <article class="an-card"><header class="an-card__head"><div><h3>Risk mix</h3><p>Share of scored scans</p></div><span class="an-chip">Donut</span></header><div class="an-donut"><div class="an-chart an-chart--donut"><canvas id="ch-mix" aria-label="Donut chart of the risk mix" role="img"></canvas><div class="an-donut__center"><strong id="mix-total">0</strong><span>scored scans</span></div></div><ul class="an-legend an-legend--row" id="mix-legend"></ul></div></article>
+          </div>
+        </section>
+
+        <section class="an-sec" data-sec="journey">
+          <header class="an-sec__head"><span class="an-num">02</span><div><h2>Where scans go</h2><p>From input type, to outcome, to risk level</p></div><button type="button" class="an-what" aria-expanded="false">what is this? <i>+</i></button></header>
+          <div class="an-explain" hidden></div>
+          <article class="an-card"><header class="an-card__head"><div><h3>Scan journey</h3><p>Hover a band to see the exact count</p></div><span class="an-chip">Sankey</span></header><div class="an-sankey" id="sankey"></div></article>
+        </section>
+
+        <section class="an-sec" data-sec="trends">
+          <header class="an-sec__head"><span class="an-num">03</span><div><h2>Trends</h2><p>How the numbers move over time and by group</p></div><button type="button" class="an-what" aria-expanded="false">what is this? <i>+</i></button></header>
+          <div class="an-explain" hidden></div>
+          <div class="an-grid an-grid--7-5">
+            <article class="an-card"><header class="an-card__head"><div><h3>Metric over time</h3><p>Last 30 days, one point per day</p></div><span class="an-chip">Line</span></header>
+              <div class="an-seg an-seg--small" role="tablist" aria-label="Metric" id="metric-tabs">
+                <button type="button" role="tab" data-v="total">Total scans</button><button type="button" role="tab" data-v="highShare">High-risk share</button><button type="button" role="tab" data-v="avgScore">Avg risk</button><button type="button" role="tab" data-v="completion">Completion</button><button type="button" role="tab" data-v="avgMs">Response</button>
+              </div>
+              <div class="an-chart an-chart--match-sm"><canvas id="ch-line" aria-label="Line chart of the selected metric over the last 30 days" role="img"></canvas></div></article>
+            <article class="an-card"><header class="an-card__head"><div><h3>Average risk by weekday</h3><p>Scored scans, 0 to 100</p></div><span class="an-chip">Bars</span></header><div class="an-chart an-chart--match-sm"><canvas id="ch-weekday" aria-label="Bar chart of average risk score by weekday" role="img"></canvas></div></article>
+          </div>
+          <article class="an-card an-card--gap"><header class="an-card__head"><div><h3>Response time by input type</h3><p>Average seconds per scan, rejected scans excluded</p></div><span class="an-chip">Bars</span></header><div class="an-hbars" id="hbars-ms"></div></article>
+        </section>
+
+        <section class="an-sec" data-sec="latest">
+          <header class="an-sec__head"><span class="an-num">04</span><div><h2>Latest scans</h2><p>The most recent anonymous scan events</p></div><button type="button" class="an-what" aria-expanded="false">what is this? <i>+</i></button></header>
+          <div class="an-explain" hidden></div>
+          <article class="an-card"><header class="an-card__head"><div><h3>Recent scan events</h3><p>Newest first. No message text and no URLs are stored.</p></div><span class="an-chip">Event log</span></header><div class="an-table-wrap"><table class="an-table" id="tbl-latest"><thead><tr><th>When</th><th>Input</th><th>Outcome</th><th>Risk score</th><th>Warning signs</th><th class="r">Time</th></tr></thead><tbody></tbody></table></div></article>
+        </section>
+      </div>
+    </div>
+
+    <!-- ================= RISK & EVIDENCE ================= -->
+    <div class="an-view" id="view-risk" role="tabpanel" aria-labelledby="tab-risk" hidden>
+      <div class="an-wrap">
+        <p class="an-takeaway"><span class="an-tag">Takeaway</span><span id="rk-takeaway"></span></p>
+
+        <section class="an-sec" data-sec="distribution">
+          <header class="an-sec__head"><span class="an-num">01</span><div><h2>Risk score distribution</h2><p>Where scored scans land on the 0 to 100 scale</p></div><button type="button" class="an-what" aria-expanded="false">what is this? <i>+</i></button></header>
+          <div class="an-explain" hidden></div>
+          <div class="an-grid an-grid--6-6">
+            <article class="an-card"><header class="an-card__head"><div><h3>Score histogram</h3><p>Dotted lines mark the 30 and 70 cut-offs</p></div><span class="an-chip">Distribution</span></header><div class="an-chart an-chart--tall"><canvas id="ch-hist" aria-label="Histogram of risk scores" role="img"></canvas></div></article>
+            <article class="an-card"><header class="an-card__head"><div><h3>Average layer score by risk level</h3><p>Which layers drive each level</p></div><span class="an-chip">Grouped bars</span></header><div class="an-chart an-chart--tall"><canvas id="ch-layers" aria-label="Grouped bar chart of average layer score by risk level" role="img"></canvas></div></article>
+          </div>
+        </section>
+
+        <section class="an-sec" data-sec="explorer">
+          <header class="an-sec__head"><span class="an-num">02</span><div><h2>3D layer explorer</h2><p>Every scan as a point in textual, structural, behavioral space</p></div><button type="button" class="an-what" aria-expanded="false">what is this? <i>+</i></button></header>
+          <div class="an-explain" hidden></div>
+          <div class="an-grid an-grid--7-5">
+            <article class="an-card an-card--explorer"><header class="an-card__head"><div><h3>Scans in 3D</h3><p id="ex-sub">Drag to rotate, scroll to zoom</p></div><span class="an-chip">Interactive</span></header>
+              <div class="an-tools"><button type="button" class="an-btn-pill" id="ex-pause" aria-pressed="false"><span aria-hidden="true">❚❚</span> <b>Pause</b></button>
+                <label class="an-select"><span class="sr-only">Color points by</span><select id="ex-color"><option value="level">Color by risk level</option><option value="input">Color by input type</option></select></label>
+                <button type="button" class="an-btn-pill" id="ex-reset">Reset view</button></div>
+              <div class="an-3d"><canvas id="ex-canvas" aria-label="Interactive 3D scatter of scans by layer score" role="img" tabindex="0"></canvas><div class="an-3d__tip" id="ex-tip" hidden></div></div>
+              <ul class="an-legend an-legend--row" id="ex-legend"></ul></article>
+            <article class="an-card"><header class="an-card__head"><div><h3>Layer correlation</h3><p>How much the layers move together</p></div><span class="an-chip">Heatmap</span></header><div class="an-corr" id="corr"></div><p class="an-note" id="corr-note"></p></article>
+          </div>
+        </section>
+
+        <section class="an-sec" data-sec="flagged">
+          <header class="an-sec__head"><span class="an-num">03</span><div><h2>Why scans were flagged</h2><p>The warning signs behind suspicious and high-risk results</p></div><button type="button" class="an-what" aria-expanded="false">what is this? <i>+</i></button></header>
+          <div class="an-explain" hidden></div>
+          <div class="an-grid an-grid--7-5">
+            <article class="an-card"><header class="an-card__head"><div><h3>Most common warning signs</h3><p>Share of suspicious and high-risk scans. Color shows the layer.</p></div><span class="an-chip">Bars</span></header>
+              <ul class="an-legend an-legend--row an-legend--top"><li><i class="dot dot--textual"></i>Textual</li><li><i class="dot dot--structural"></i>Structural</li><li><i class="dot dot--behavioral"></i>Behavioral</li></ul>
+              <div class="an-hbars an-hbars--signs" id="hbars-signs"></div></article>
+            <article class="an-card"><header class="an-card__head"><div><h3>Warning signs by risk level</h3><p>How often each sign shows up at each level</p></div><span class="an-chip">Heatmap</span></header><div class="an-heat" id="heat-signs"></div></article>
+          </div>
+        </section>
+
+        <section class="an-sec" data-sec="unexamined">
+          <header class="an-sec__head"><span class="an-num">04</span><div><h2>When the system could not decide</h2><p>Failure reasons for link screening</p></div><button type="button" class="an-what" aria-expanded="false">what is this? <i>+</i></button></header>
+          <div class="an-explain" hidden></div>
+          <div class="an-grid an-grid--7-5">
+            <article class="an-card"><header class="an-card__head"><div><h3>Why scans could not be examined</h3><p>Share of unexamined scans</p></div><span class="an-chip">Bars</span></header><div class="an-hbars" id="hbars-fail"></div><p class="an-note" id="fail-note"></p></article>
+            <article class="an-card"><header class="an-card__head"><div><h3>Outcome split</h3><p>Every scan in the selection</p></div><span class="an-chip">Donut</span></header><div class="an-donut"><div class="an-chart an-chart--donut"><canvas id="ch-outcome" aria-label="Donut chart of scan outcomes" role="img"></canvas><div class="an-donut__center"><strong id="out-total">0</strong><span>scans</span></div></div><ul class="an-legend an-legend--row" id="out-legend"></ul></div></article>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ================= MODEL LAB ================= -->
+    <div class="an-view" id="view-model" role="tabpanel" aria-labelledby="tab-model" hidden>
+      <div class="an-wrap">
+        <p class="an-takeaway"><span class="an-tag">Takeaway</span><span id="ml-takeaway"></span></p>
+
+        <section class="an-sec" data-sec="configs">
+          <header class="an-sec__head"><span class="an-num">01</span><div><h2>Compare the three configurations on the held-out test set</h2><p>Pick the layers the scorer can use, then move the threshold</p></div><button type="button" class="an-what" aria-expanded="false">what is this? <i>+</i></button></header>
+          <div class="an-explain" hidden></div>
+          <article class="an-card an-lab">
+            <div class="an-lab__controls">
+              <div class="an-filter"><span class="an-filter__label" id="lbl-config">Configuration</span><div class="an-seg" role="radiogroup" aria-labelledby="lbl-config" id="cfg-seg"></div><span class="an-hint">Pick which layers the model can use</span></div>
+              <div class="an-filter an-filter--grow"><span class="an-filter__label"><label for="thr">Decision threshold</label></span>
+                <div class="an-slider"><output id="thr-out">0.50</output><input type="range" id="thr" min="0.10" max="0.90" step="0.01" value="0.50"><button type="button" class="an-btn-pill" id="thr-tuned">Use tuned threshold</button></div></div>
+            </div>
+            <div class="an-metrics" id="ml-metrics"></div>
+          </article>
+          <div class="an-grid an-grid--5-7 an-grid--gap">
+            <article class="an-card"><header class="an-card__head"><div><h3>Confusion matrix</h3><p>400 held-out test messages</p></div><span class="an-chip">Heatmap</span></header><div class="an-cm" id="cm"></div></article>
+            <article class="an-card"><header class="an-card__head"><div><h3>F1-score across thresholds</h3><p>The star is the current threshold</p></div><span class="an-chip">Line</span></header><div class="an-chart an-chart--mid"><canvas id="ch-f1" aria-label="F1-score at each decision threshold" role="img"></canvas></div></article>
+          </div>
+        </section>
+
+        <section class="an-sec" data-sec="thesis">
+          <header class="an-sec__head"><span class="an-num">02</span><div><h2>The thesis question</h2><p>Answered on the test set</p></div><button type="button" class="an-what" aria-expanded="false">what is this? <i>+</i></button></header>
+          <div class="an-explain" hidden></div>
+          <div class="an-grid an-grid--4-4-4">
+            <article class="an-card"><header class="an-card__head"><div><h3>F1-score by configuration</h3><p>Each at its own tuned threshold</p></div><span class="an-chip">Bars</span></header><div class="an-chart an-chart--mid"><canvas id="ch-f1bars" aria-label="F1-score by configuration" role="img"></canvas></div><p class="an-delta" id="f1-delta"></p></article>
+            <article class="an-card"><header class="an-card__head"><div><h3>ROC curves</h3><p>Closer to the top-left is better</p></div><span class="an-chip">Curves</span></header><div class="an-chart an-chart--mid"><canvas id="ch-roc" aria-label="ROC curves for the three configurations" role="img"></canvas></div></article>
+            <article class="an-card an-card--thesis"><header class="an-card__head"><div><h3>Text-evasive scams caught</h3><p>Polished, AI-written scams whose wording looks clean. Recall at each configuration's tuned threshold.</p></div><span class="an-chip an-chip--red">Thesis case</span></header><div class="an-chart an-chart--mid"><canvas id="ch-evasive" aria-label="Recall on ordinary and text-evasive scams" role="img"></canvas></div></article>
+          </div>
+        </section>
+
+        <section class="an-sec" data-sec="profiles">
+          <header class="an-sec__head"><span class="an-num">03</span><div><h2>Compare profiles</h2><p>All three configurations side by side</p></div><button type="button" class="an-what" aria-expanded="false">what is this? <i>+</i></button></header>
+          <div class="an-explain" hidden></div>
+          <div class="an-grid an-grid--5-7">
+            <article class="an-card"><header class="an-card__head"><div><h3>Profile comparison</h3><p>Five measures per configuration</p></div><span class="an-chip">Radar</span></header><div class="an-chart an-chart--radar"><canvas id="ch-radar" aria-label="Radar chart of five measures per configuration" role="img"></canvas></div></article>
+            <article class="an-card"><header class="an-card__head"><div><h3>Metric table</h3><p>Best value in each row is highlighted</p></div><span class="an-chip">Table</span></header><div class="an-table-wrap"><table class="an-table an-table--metrics" id="tbl-metrics"><thead></thead><tbody></tbody></table></div></article>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ================= PLAYGROUND ================= -->
+    <div class="an-view" id="view-playground" role="tabpanel" aria-labelledby="tab-playground" hidden>
+      <div class="an-wrap">
+        <section class="an-sec an-sec--first" data-sec="playground">
+          <header class="an-sec__head"><span class="an-num an-num--ghost" aria-hidden="true"></span><div><h2>Scan playground</h2><p>Warning signs, weights and the live result</p></div><button type="button" class="an-what" aria-expanded="false">what is this? <i>+</i></button></header>
+          <div class="an-explain" hidden></div>
+          <div class="an-grid an-grid--7-5 an-play">
+            <article class="an-card">
+              <header class="an-card__head"><div><h3>Warning signs</h3><p>Tick what the message, link or page shows</p></div>
+                <div class="an-seg an-seg--small" role="tablist" aria-label="Playground mode" id="pg-mode"><button type="button" role="tab" data-v="signs">Warning signs</button><button type="button" role="tab" data-v="sliders">Layer sliders</button></div></header>
+              <div class="an-presets" id="pg-presets"></div>
+              <div id="pg-signs" class="an-signs"></div>
+              <div id="pg-sliders" class="an-sliders" hidden></div>
+            </article>
+            <div class="an-play__side">
+              <article class="an-card"><header class="an-card__head"><div><h3>Risk score</h3><p>Live result</p></div><span class="an-chip">Gauge</span></header><div class="an-gauge" id="pg-gauge"></div></article>
+              <article class="an-card"><header class="an-card__head"><div><h3>What drove the score</h3><p>Weight of each warning sign that is ticked</p></div><span class="an-chip">Bars</span></header><div class="an-hbars an-hbars--drivers" id="pg-drivers"></div></article>
+              <article class="an-card an-card--how"><h3>How the score works</h3><p>Each ticked sign has a chance-style weight. They combine like this, so more signs raise the score without ever passing 99.</p><p class="an-formula"><code>score = 1 − (1 − w₁) × (1 − w₂) × …</code></p><ul class="an-bands"><li><i class="dot dot--low"></i>Low 0 to 29</li><li><i class="dot dot--medium"></i>Suspicious 30 to 69</li><li><i class="dot dot--high"></i>High 70 to 100</li></ul></article>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ================= REPORT ================= -->
+    <div class="an-view" id="view-report" role="tabpanel" aria-labelledby="tab-report" hidden>
+      <div class="an-wrap">
+        <section class="an-sec an-sec--first" data-sec="findings">
+          <header class="an-sec__head"><span class="an-num an-num--ghost" aria-hidden="true"></span><div><h2>Key findings</h2><p>Plain-language results from the current selection</p></div><button type="button" class="an-what" aria-expanded="false">what is this? <i>+</i></button></header>
+          <div class="an-explain" hidden></div>
+          <div class="an-grid an-grid--7-5 an-report">
+            <article class="an-card"><header class="an-card__head"><div><h3>What the data shows</h3><p>Computed from the simulated log and the test set</p></div><span class="an-chip">Findings</span></header><ol class="an-findings" id="rp-findings"></ol></article>
+            <div class="an-play__side">
+              <article class="an-card"><header class="an-card__head"><div><h3>Selection summary</h3><p>What the report covers</p></div><span class="an-chip">Summary</span></header><dl class="an-dl" id="rp-summary"></dl>
+                <div class="an-actions"><button type="button" class="an-btn an-btn--primary" id="rp-pdf">Export report (PDF)</button><button type="button" class="an-btn" id="rp-csv">Download CSV</button><button type="button" class="an-btn" id="rp-copy">Copy summary</button></div>
+                <button type="button" class="an-link" id="rp-clear" hidden>Clear live scans from this browser</button></article>
+              <article class="an-card"><header class="an-card__head"><div><h3>Risk mix in this selection</h3><p>Share of scored scans</p></div><span class="an-chip">Mix</span></header><div class="an-mixbar" id="rp-mixbar" role="img" aria-label="Risk mix of the selection"></div><ul class="an-mixlist" id="rp-mixlist"></ul></article>
+            </div>
+          </div>
+          <article class="an-card an-card--gap"><header class="an-card__head"><div><h3>What to do next</h3><p>Actions the numbers point to</p></div><span class="an-chip">Decisions</span></header><ul class="an-actions-list" id="rp-actions"></ul></article>
+        </section>
+        <section class="an-sec" data-sec="method">
+          <header class="an-sec__head"><span class="an-num an-num--ghost" aria-hidden="true"></span><div><h2>Method and limits</h2><p>What to keep in mind when reading the results</p></div></header>
+          <div class="an-grid an-grid--4-4-4">
+            <article class="an-card an-card--note"><h3>Anonymous by design</h3><p>Only metadata is logged: input type, outcome, scores and warning signs. No message text and no URLs.</p></article>
+            <article class="an-card an-card--note"><h3>Simulated data</h3><p>The scan log is generated for this project. Model metrics are computed on a labeled test set that is also simulated, so they show how the method behaves, not how it performs on real scams.</p></article>
+            <article class="an-card an-card--note"><h3>Same scoring as the prototype</h3><p>Warning-sign weights combine, scores run 0 to 100, and levels are Low 0-29, Suspicious 30-69, High 70-100.</p></article>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner container">
+      <p class="site-footer__brand">ISKAMDAR</p>
+      <p>An Intelligent Scam-Detection Framework Using Page Structure and Behavioral Analysis</p>
+      <p class="an-foot">Analytics module | simulated data | anonymous metadata only</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="an-tip" id="an-tip" hidden></div>
+
+  <script src="script.js?v=27"></script>
+  <script src="vendor/chart.umd.min.js"></script>
+  <script src="analytics-data.js?v=1"></script>
+  <script src="analytics.js?v=1"></script>
+</body>
+</html>
